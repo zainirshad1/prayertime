@@ -1,34 +1,3 @@
-smallbusinessweb.co
-Best Online Prayer Platform Live Streaming: How to create it?
-PrayerMate app has a highly-secure and intuitive prayer index card interface that suits both Android and iOS devices. It is easy to download prayer galleries.
-mymasjidal.com
-Masjidal: Athan Clock, Masjid Prayer Time Displays and Donation ...
-The Al-Iqamah app, a cloud-based, digital bulletin board for Masjids, can be remotely managed and refreshed at will. A customizable tool, it can be used to ...
-www.reddit.com
-Help with website for local Masjid : r/muslimtechnet - Reddit
-Five Prayer: The Five Prayer plugin is designed for Muslim WordPress websites. It's perfect for: Muslim masjids or mosques. Community masjids.
-www.dynamologic.com
-Developed a Comprehensive Prayer Timings App & Web Platform
-We adopted Android Studio, Xcode, and Laravel to build the apps and web platform. We ensured real-time synchronization by verifying data through a custom ...
-connectmazjid.com
-Best Masjid Display Software From ConnectMazjid
-ConnectMazjid enables mosque administrators to update prayer times, announcements, and events in real time through the centralized Admin portal. These updates ...
-www.muslimpro.com
-Muslim Pro App | Prayer Times, Adhan, Qibla, Holy Quran
-The pioneering Muslim lifestyle app with more than 170 million downloads globally providing accurate prayer times, Qibla, Holy Quran and more.
-www.islamicfinder.org
-The Best Athan App for Muslims Prayer times - IslamicFinder
-Athan by IslamicFinder is the most trusted Islamic App in the Muslim world. Get prayer times, Qibla direction in the best App for iPhone and Android in 2023.
-www.quora.com
-What are the most reliable apps for salat time? - Quora
-Prayer Times - Qibla, Auto Silent & Qaza Namaz: This is the best app for salah reminders. Thanks! Continue Reading.
-www.prayermate.net
-PrayerMate - Christian Prayer App
-PrayerMate helps you pray consistently for the people and causes you care about. Develop a discipline of prayer as PrayerMate helps you organise your prayer ...
-riseuplabs.com
-Islamic App Development Guidelines - Riseup Labs
-Learn how to create Islamic apps with a step-by-step Islamic app development guidelines. Read the ultimate guide.
-868 lines
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,334 +5,753 @@ Learn how to create Islamic apps with a step-by-step Islamic app development gui
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Namaz Prayer Times</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .prayer-time-card {
-            transition: all 0.3s ease;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
         }
-        .prayer-time-card.active {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        .mosque-shape {
+            position: relative;
         }
-        .modal {
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .mosque-shape:after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%231a6f4c" fill-opacity="1" d="M0,288L48,277.3C96,267,192,245,288,250.7C384,256,480,288,576,298.7C672,309,768,299,864,272C960,245,1056,203,1152,186.7C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+            background-size: 1440px 200px;
+            z-index: -1;
         }
-        .modal.hidden {
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
+        .current-prayer {
+            animation: pulse 2s infinite;
         }
-        .aspect-video {
-            aspect-ratio: 16/9;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(26, 111, 76, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(26, 111, 76, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(26, 111, 76, 0); }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-green-700 text-white shadow-md">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-
-Need to build a website, android and ios app, for namaz prayer times. which will autodetect location and or allow user to choose the mosque and view the prayer times. it should have 3 user access, 1 the end user who will be able to view the prayer timing, select the mosque and view live broadcast from the selected mosque, or master broadcast. 2. the mosque admin who can modify the timing and broadcast from the mosque.
-3. master admins, who can add, delete, modify mosque details
-BLACKBOXAI
-
-Since you're requesting a comprehensive solution across web, Android, and iOS platforms, I'll start by creating a web version that will serve as the foundation for all platforms. We'll use a responsive design approach that will also facilitate conversion to mobile apps later.
-
-Here's a complete single-file solution for the web version with:
-
-    Location detection
-    Mosque selection
-    Prayer time display
-    Three user types with appropriate UI controls
-    Broadcast viewing capability
-    Admin interfaces for mosque and master admins
-
-I'll implement this using HTML, CSS, and JavaScript with Tailwind CSS for styling:
-
-html315 lines
-Click to expand
-
-<!DOCTYPE html>
-<html lang="en">
-...
-
-where can i deploy this
-BLACKBOXAI
-
-Best Online Prayer Platform Live Streaming: How to create it?
-smallbusinessweb
-
-Masjidal: Athan Clock, Masjid Prayer Time Displays and Donation ...
-mymasjidal
-
-Help with website for local Masjid : r/muslimtechnet - Reddit
-reddit
-
-Developed a Comprehensive Prayer Timings App & Web Platform
-dynamologic
-
-For deploying a website and mobile app for prayer times, consider platforms like PrayerMate, which offers a user-friendly interface for prayer management, and Muslim Pro, known for its extensive features including prayer times and Qibla direction. Additionally, ConnectMazjid provides tools for mosque administrators to manage prayer times and broadcasts effectively.
-
-help me build website
-BLACKBOXAI
-
-I'll help you build a comprehensive prayer times website with all the features you requested. Let's create a complete solution with HTML, CSS, and JavaScript in a single file that includes:
-
-    Location detection
-    Mosque selection
-    Prayer time display
-    Three user types (end user, mosque admin, master admin)
-    Live broadcast viewing
-    Admin interfaces
-
-Here's the complete code:
-
-html863 lines
-Click to expand
-
-<!DOCTYPE html>
-<html lang="en">
-...
-
-This complete solution includes:
-
-    User Authentication System with three roles:
-        End User (can view prayer times and broadcasts)
-        Mosque Admin (can update prayer times and manage broadcasts)
-        Master Admin (can manage all mosques and admins)
-
-    Core Features:
-        Mosque selection interface
-        Prayer time display with active prayer highlighting
-        Live broadcast viewing capability
-        Location detection functionality
-
-    Admin Interfaces:
-        Mosque Admin Dashboard:
-            Prayer time management
-            Broadcast controls
-            Mosque information updates
-        Master Admin Dashboard:
-            Mosque management (add/edit/delete)
-            Admin user management
-
-    Responsive Design:
-        Works on mobile, tablet, and desktop
-        Clean, intuitive interface with Islamic design elements
-
-    Interactive Elements:
-        Prayer time cards that show details when clicked
-        Mosque selection with visual feedback
-        Broadcast player with fullscreen mode
-
-To deploy this website:
-
-    Save the code as index.html
-    Upload it to any web hosting service (Netlify, Vercel, GitHub Pages, etc.)
-    For production, you would need to:
-        Add backend functionality (Node.js, PHP, etc.)
-        Connect to a database for prayer times and mosque data
-        Implement real broadcast streaming (using services like YouTube Live or Wowza)
-        Add proper authentication system
-
-Would you like me to explain any specific part of this implementation in more detail?
-
-where can I host this for free
-BLACKBOXAI
-
-You can host your website for free on several platforms. Here are some popular options:
-
-    GitHub Pages:
-        Ideal for static websites.
-        You can create a repository, push your HTML file, and enable GitHub Pages in the repository settings.
-        URL format: https://username.github.io/repository-name
-
-    Netlify:
-        Supports static sites and offers continuous deployment from Git repositories.
-        You can drag and drop your HTML file or connect your GitHub repository.
-        URL format: https://your-site-name.netlify.app
-
-    Vercel:
-        Great for static sites and serverless functions.
-        You can deploy directly from a GitHub repository or upload your files.
-        URL format: https://your-site-name.vercel.app
-
-    Glitch:
-        Allows you to create and host web applications easily.
-        You can edit your code directly in the browser and see changes in real-time.
-        URL format: https://your-project-name.glitch.me
-
-    Replit:
-        An online IDE that allows you to host web applications.
-        You can create a new Repl, paste your HTML code, and run it.
-        URL format: https://your-repl-name.repl.co
-
-    Surge:
-        A simple command-line tool for publishing static sites.
-        You can install Surge via npm and deploy your site with a single command.
-        URL format: https://your-site-name.surge.sh
-
-Steps to Host on GitHub Pages:
-
-    Create a GitHub Account: If you don't have one, sign up at GitHub.
-
-    Create a New Repository:
-        Go to your GitHub profile and click on "New" to create a new repository.
-        Name your repository (e.g., namaz-prayer-times).
-        Choose "Public" and click "Create repository".
-
-    Upload Your HTML File:
-        Click on "Add file" > "Upload files".
-        Drag and drop your index.html file or click to select it.
-        Commit the changes.
-
-    Enable GitHub Pages:
-        Go to the "Settings" tab of your repository.
-        Scroll down to the "GitHub Pages" section.
-        Under "Source", select the branch (usually main or master) and click "Save".
-
-    Access Your Site:
-        After a few minutes, your site will be available at https://username.github.io/namaz-prayer-times.
-
-Conclusion
-
-Choose the platform that best fits your needs. For a simple static site, GitHub Pages, Netlify, or Vercel are excellent choices. If you need more interactive features or backend support, consider Glitch or Replit.
-
-give me the code
-BLACKBOXAI
-
-🔄 HTML Edit Mode - Processing your edit request...
-
-Let me know which aspects you'd like to modify. Here are some common potential changes:
-
-    To update the logo:
-
-diff
-
-<<<<<<< SEARCH
-
-                <img src="https://placehold.co/40x40" alt="Golden mosque icon with minaret illustration" class="rounded-full">
-
-=======
-
-                <img src="https://placehold.co/40x40?text=Mosque+Logo" alt="Mosque logo with crescent moon and minaret" class="rounded-full">
-
->>>>>>> REPLACE
-
-    To update the main prayer times display:
-
-diff
-
-<<<<<<< SEARCH
-
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-
-                <h2 class="text-xl font-bold mb-4">
-
-                    <i class="fas fa-calendar-alt mr-2 text-green-700"></i>
-
-                    Today's Prayer Times
-
-                </h2>
-
-=======
-
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-
-                <h2 class="text-xl font-bold mb-4 text-center">
-
-                    <i class="fas fa-calendar-alt mr-2 text-green-700"></i>
-
-                    Today's Prayer Times for <span class="text-green-700" id="currentDate"></span>
-
-                </h2>
-
->>>>>>> REPLACE
-
-    To add a date display in the JavaScript:
-
-diff
-
-<<<<<<< SEARCH
-
-        // Initialize
-
-        showSection('home');
-
-        
-
-        // Simulate prayer time updates
-
-=======
-
-        // Initialize
-
-        showSection('home');
-
-        
-
-        // Set current date
-
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', options);
-
-        
-
-        // Simulate prayer time updates
-
->>>>>>> REPLACE
-
-    To make the location detection more prominent:
-
-diff
-
-<<<<<<< SEARCH
-
-                <button id="locationBtn" class="bg-green-600 hover:bg-green-800 px-3 py-1 rounded-full text-sm flex items-center transition">
-
-                    <i class="fas fa-location-arrow mr-1"></i> Detect Location
-
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-white">
+    <div class="mosque-shape bg-green-700 text-white py-8 px-6 rounded-b-3xl shadow-lg">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold">Namaz Times</h1>
+                    <p id="current-date" class="text-green-100">Loading date...</p>
+                </div>
+                <button id="admin-login-btn" class="bg-white text-green-700 px-4 py-2 rounded-lg shadow-sm hover:bg-green-50 transition">
+                    Mosque Admin
                 </button>
+                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-md">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/af293289-ab2d-486d-8923-7b678c8346cd.png" alt="Golden Islamic crescent moon symbol on green background" class="w-12 h-12 object-contain" />
+                </div>
+            </div>
+        </div>
+    </div>
 
-=======
+    <div class="container mx-auto px-4 py-8 flex-1">
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xl font-semibold text-gray-800">Location</h2>
+                    <button id="location-btn" class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-2 px-4 rounded-lg flex items-center transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                        </svg>
+                        <span id="location-name">Current Location</span>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700">Select Mosque:</span>
+                    <select id="mosque-select" class="bg-gray-100 rounded-lg px-3 py-2 text-sm w-48">
+                        <option value="">Auto-detect nearby</option>
+                        <option value="central">Central Jamia Masjid</option>
+                        <option value="shah">Shah Faisal Masjid</option>
+                        <option value="islamic-center">Islamic Center</option>
+                        <option value="grand">Grand Mosque</option>
+                    </select>
+                </div>
+            </div>
 
-                <button id="locationBtn" class="bg-green-600 hover:bg-green-800 px-4 py-2 rounded-full text-sm flex items-center transition shadow-md">
+            <div class="text-center">
+                <p class="text-4xl font-bold text-green-700 mb-2" id="current-time">--:-- --</p>
+                <p class="text-gray-500">Next Prayer: <span id="next-prayer-name" class="font-medium text-green-600">None</span> at <span id="next-prayer-time" class="font-medium text-green-600">--:-- --</span></p>
+            </div>
+        </div>
 
-                    <i class="fas fa-map-marker-alt mr-2"></i> Auto-Detect Nearest Mosque
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div id="fajr-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Fajr</h3>
+                    <p class="text-2xl font-semibold text-gray-800">05:30 AM</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ddd3e7e6-e1ec-4e40-a7ef-d8934ef03671.png" alt="Sun rising between minarets at dawn representing Fajr prayer time" class="w-6 h-6 object-contain" />
+                </div>
+            </div>
 
-                </button>
+            <div id="dhuhr-card" class="prayer-card current-prayer bg-gradient-to-r from-green-50 to-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-yellow-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">
+                        <span id="dhuhr-label">Dhuhr</span>
+                        <span id="jumuah-label" class="hidden">Jumu'ah</span>
+                    </h3>
+                    <p class="text-2xl font-semibold text-gray-800">01:15 PM</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1c783d9f-9076-455a-bd83-cb1e1db0dcc1.png" alt="Sun at high noon casting no shadows representing Dhuhr prayer time" class="w-6 h-6 object-contain" />
+                </div>
+            </div>
 
->>>>>>> REPLACE
+            <div id="asr-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-orange-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Asr</h3>
+                    <p class="text-2xl font-semibold text-gray-800">04:45 PM</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/440f633a-7864-40a8-8077-5411d46ccc05.png" alt="Long afternoon shadows representing Asr prayer time" class="w-6 h-6 object-contain" />
+                </div>
+            </div>
 
-Would you like me to provide changes for any other specific parts of the application? For example:
+            <div id="maghrib-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-red-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Maghrib</h3>
+                    <p class="text-2xl font-semibold text-gray-800">06:30 PM</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3c4558de-5378-40b4-9118-c3c142e38ef2.png" alt="Sun setting behind a mosque silhouette representing Maghrib prayer time" class="w-6 h-6 object-contain" />
+                </div>
+            </div>
 
-    Adding a prayer times calculation API integration
-    Enhancing the mosque admin interface
-    Improving the mobile responsiveness
-    Adding more interactive elements
+            <div id="isha-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-purple-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Isha</h3>
+                    <p class="text-2xl font-semibold text-gray-800">08:00 PM</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/56f986c0-3b36-42dd-a26c-e563ccf895c2.png" alt="Night sky with stars and crescent moon representing Isha prayer time" class="w-6 h-6 object-contain" />
+                </div>
+            </div>
 
-Let me know which aspects you'd like to focus on and I'll provide the specific SEARCH/REPLACE diffs for those sections.Here is the updated HTML content after applying above edits:
+            <div class="bg-white rounded-xl shadow-sm p-6 md:col-span-2">
+                <h3 class="font-bold text-gray-500 mb-2">Live Broadcast</h3>
+                <div class="mb-4 p-4 bg-gray-50 rounded-lg">
+                    <div id="broadcast-status" class="text-center text-gray-500 mb-2">
+                        No live broadcast currently
+                    </div>
+                    <audio id="broadcast-player" controls class="w-full hidden"></audio>
+                    <button id="join-broadcast-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg w-full hidden">
+                        Join Friday Prayer Broadcast
+                    </button>
+                </div>
+                
+                <h3 class="font-bold text-gray-500 mb-4">Settings</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Default Mosque</span>
+                        <select id="default-mosque" class="bg-gray-100 rounded-lg px-3 py-2 text-sm">
+                            <option value="remember">Remember last selected</option>
+                            <option value="auto">Always auto-detect</option>
+                            <option value="specific">Specific mosque</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Calculation Method</span>
+                        <select class="bg-gray-100 rounded-lg px-3 py-2 text-sm">
+                        <option>Muslim World League</option>
+                        <option>Islamic Society of North America</option>
+                        <option>Egyptian General Authority</option>
+                        <option>Umm Al-Qura University</option>
+                    </select>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700">Asr Calculation</span>
+                    <select class="bg-gray-100 rounded-lg px-3 py-2 text-sm">
+                        <option>Standard (Shafi'i)</option>
+                        <option>Hanafi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
-html867 lines
-Click to expand
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Admin Login</h3>
+            <form id="login-form">
+                <div class="mb-4" id="mosque-select-container">
+                    <label class="block text-gray-700 mb-2">Mosque</label>
+                    <select id="admin-mosque-select" class="w-full bg-gray-100 rounded-lg px-3 py-2">
+                        <option value="">Select Mosque</option>
+                        <option value="central">Central Jamia Masjid</option>
+                        <option value="shah">Shah Faisal Masjid</option>
+                        <option value="islamic-center">Islamic Center</option>
+                        <option value="grand">Grand Mosque</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Login Type</label>
+                    <select id="admin-type" class="w-full bg-gray-100 rounded-lg px-3 py-2">
+                        <option value="mosque">Mosque Admin</option>
+                        <option value="master">Master Admin</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" id="admin-password" class="w-full bg-gray-100 rounded-lg px-3 py-2">
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-login" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-<!DOCTYPE html>
-<html lang="en">
-...
+    <footer class="bg-green-800 text-white py-4">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>© 2023 Namaz Times App</p>
+            <p class="text-green-200 mt-1">Prayer times calculated for your location</p>
+        </div>
+    </footer>
 
-🎨 Generating images based on descriptions...
+    <!-- Add Mosque Modal -->
+    <div id="add-mosque-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Add New Mosque</h3>
+            <form id="add-mosque-form">
+                <div class="space-y-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Mosque Name</label>
+                        <input type="text" id="new-mosque-name" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Address</label>
+                        <textarea id="new-mosque-address" class="w-full bg-gray-100 rounded-lg px-3 py-2" rows="2" required></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">City</label>
+                            <input type="text" id="new-mosque-city" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">State</label>
+                            <input type="text" id="new-mosque-state" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Pincode</label>
+                            <input type="text" id="new-mosque-pincode" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Country</label>
+                            <input type="text" id="new-mosque-country" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                    </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Fajr</label>
+                            <input type="time" id="new-fajr" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Dhuhr</label>
+                            <input type="time" id="new-dhuhr" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Asr</label>
+                            <input type="time" id="new-asr" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Maghrib</label>
+                            <input type="time" id="new-maghrib" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Isha</label>
+                            <input type="time" id="new-isha" class="w-full bg-gray-100 rounded-lg px-3 py-2" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" id="cancel-add-mosque" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Add Mosque
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-✅ Images generated successfully! Here's your updated content:
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Update Prayer Times</h3>
+                <div class="flex space-x-2">
+                    <button id="add-mosque-btn" class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600">
+                        Add Mosque
+                    </button>
+                    <button id="delete-mosque-btn" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 hidden">
+                        Delete Mosque
+                    </button>
+                    <button id="logout-btn" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <form id="times-form">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-gray-700">Fajr</label>
+                        <input type="time" id="admin-fajr" class="bg-gray-100 rounded-lg px-3 py-2">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-gray-700">Dhuhr</label>
+                        <input type="time" id="admin-dhuhr" class="bg-gray-100 rounded-lg px-3 py-2">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-gray-700">Asr</label>
+                        <input type="time" id="admin-asr" class="bg-gray-100 rounded-lg px-3 py-2">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-gray-700">Maghrib</label>
+                        <input type="time" id="admin-maghrib" class="bg-gray-100 rounded-lg px-3 py-2">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-gray-700">Isha</label>
+                        <input type="time" id="admin-isha" class="bg-gray-100 rounded-lg px-3 py-2">
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-html867 lines
-Click to close
+    <script>
+        // Check if today is Friday
+        function isFriday() {
+            return new Date().getDay() === 5; // 5 is Friday
+        }
 
-<!DOCTYPE html>
-<html lang="en">
-...
+        // Update prayer display for Friday
+        function updateFridayDisplay() {
+            const isFri = isFriday();
+            document.getElementById('dhuhr-label').classList.toggle('hidden', isFri);
+            document.getElementById('jumuah-label').classList.toggle('hidden', !isFri);
+        }
 
-Follow us on
+        // Handle broadcast functionality
+        function setupBroadcast() {
+            const broadcastBtn = document.getElementById('join-broadcast-btn');
+            const player = document.getElementById('broadcast-player');
+            const status = document.getElementById('broadcast-status');
+            
+            // Demo broadcast - in real app this would connect to actual stream
+            broadcastBtn.addEventListener('click', function() {
+                status.textContent = "Connecting to live broadcast...";
+                player.classList.remove('hidden');
+                broadcastBtn.classList.add('hidden');
+                
+                // Simulate connecting to stream
+                setTimeout(() => {
+                    status.textContent = "Live: Friday Khutbah from " + 
+                        document.getElementById('location-name').textContent;
+                    player.src = "https://example.com/live-stream.mp3"; // Replace with actual stream URL
+                }, 1500);
+            });
+            
+            // Show broadcast button only on Fridays during Dhuhr time
+            if (isFriday()) {
+                broadcastBtn.classList.remove('hidden');
+            }
+        }
 
-By using Blackbox you agree to the Terms and Privacy.
+        // Check if today is Friday
+        function isFriday() {
+            return new Date().getDay() === 5; // 5 is Friday
+        }
+
+        // Update prayer display for Friday
+        function updateFridayDisplay() {
+            const isFri = isFriday();
+            document.getElementById('dhuhr-label').classList.toggle('hidden', isFri);
+            document.getElementById('jumuah-label').classList.toggle('hidden', !isFri);
+        }
+
+        // Handle broadcast functionality
+        function setupBroadcast() {
+            const broadcastBtn = document.getElementById('join-broadcast-btn');
+            const player = document.getElementById('broadcast-player');
+            const status = document.getElementById('broadcast-status');
+            
+            // Demo broadcast - in real app this would connect to actual stream
+            broadcastBtn.addEventListener('click', function() {
+                status.textContent = "Connecting to live broadcast...";
+                player.classList.remove('hidden');
+                broadcastBtn.classList.add('hidden');
+                
+                // Simulate connecting to stream
+                setTimeout(() => {
+                    status.textContent = "Live: Friday Khutbah from " + 
+                        document.getElementById('location-name').textContent;
+                    player.src = "https://example.com/live-stream.mp3"; // Replace with actual stream URL
+                }, 1500);
+            });
+            
+            // Show broadcast button only on Fridays during Dhuhr time
+            if (isFriday()) {
+                broadcastBtn.classList.remove('hidden');
+            }
+        }
+
+        // Check if today is Friday
+        function isFriday() {
+            return new Date().getDay() === 5; // 5 is Friday
+        }
+
+        // Update prayer display for Friday
+        function updateFridayDisplay() {
+            const isFri = isFriday();
+            document.getElementById('dhuhr-label').classList.toggle('hidden', isFri);
+            document.getElementById('jumuah-label').classList.toggle('hidden', !isFri);
+        }
+
+        // Handle broadcast functionality
+        function setupBroadcast() {
+            const broadcastBtn = document.getElementById('join-broadcast-btn');
+            const player = document.getElementById('broadcast-player');
+            const status = document.getElementById('broadcast-status');
+            
+            // Demo broadcast - in real app this would connect to actual stream
+            broadcastBtn.addEventListener('click', function() {
+                status.textContent = "Connecting to live broadcast...";
+                player.classList.remove('hidden');
+                broadcastBtn.classList.add('hidden');
+                
+                // Simulate connecting to stream
+                setTimeout(() => {
+                    status.textContent = "Live: Friday Khutbah from " + 
+                        document.getElementById('location-name').textContent;
+                    player.src = "https://example.com/live-stream.mp3"; // Replace with actual stream URL
+                }, 1500);
+            });
+            
+            // Show broadcast button only on Fridays during Dhuhr time
+            if (isFriday()) {
+                broadcastBtn.classList.remove('hidden');
+            }
+        }
+
+        // Update current time
+        function updateCurrentTime() {
+            updateFridayDisplay();
+            updateFridayDisplay();
+            updateFridayDisplay();
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', options);
+            
+            const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', dateOptions);
+            
+            // Determine current prayer time (this is demo logic)
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            // Demo prayer times
+            const prayers = [
+                { name: 'Fajr', time: { hour: 5, minute: 30 }, cardId: 'fajr-card' },
+                { name: 'Dhuhr', time: { hour: 13, minute: 15 }, cardId: 'dhuhr-card' },
+                { name: 'Asr', time: { hour: 16, minute: 45 }, cardId: 'asr-card' },
+                { name: 'Maghrib', time: { hour: 18, minute: 30 }, cardId: 'maghrib-card' },
+                { name: 'Isha', time: { hour: 20, minute: 0 }, cardId: 'isha-card' }
+            ];
+            
+            // Reset all prayer cards
+            document.querySelectorAll('.prayer-card').forEach(card => {
+                card.classList.remove('current-prayer');
+                card.classList.add('bg-white');
+                card.classList.remove('bg-gradient-to-r', 'from-green-50', 'to-white');
+            });
+            
+            // Find current prayer time
+            let currentPrayer = null;
+            let nextPrayer = null;
+            
+            for (let i = 0; i < prayers.length; i++) {
+                const prayer = prayers[i];
+                const nextIdx = (i + 1) % prayers.length;
+                
+                if ((hour > prayer.time.hour || (hour === prayer.time.hour && minute >= prayer.time.minute)) &&
+                    (hour < prayers[nextIdx].time.hour || (hour === prayers[nextIdx].time.hour && minute < prayers[nextIdx].time.minute))) {
+                    currentPrayer = prayer;
+                    nextPrayer = prayers[nextIdx];
+                    break;
+                }
+            }
+            
+            // If no current prayer found (before Fajr)
+            if (!currentPrayer) {
+                currentPrayer = prayers[prayers.length - 1];
+                nextPrayer = prayers[0];
+            }
+            
+            // Highlight current prayer
+            const currentCard = document.getElementById(currentPrayer.cardId);
+            if (currentCard) {
+                currentCard.classList.add('current-prayer');
+                currentCard.classList.remove('bg-white');
+                currentCard.classList.add('bg-gradient-to-r', 'from-green-50', 'to-white');
+            }
+            
+            // Show next prayer info
+            if (nextPrayer) {
+                const hourStr = nextPrayer.time.hour % 12 === 0 ? 12 : nextPrayer.time.hour % 12;
+                const ampm = nextPrayer.time.hour >= 12 ? 'PM' : 'AM';
+                const timeStr = `${hourStr}:${nextPrayer.time.minute.toString().padStart(2, '0')} ${ampm}`;
+                
+                document.getElementById('next-prayer-name').textContent = nextPrayer.name;
+                document.getElementById('next-prayer-time').textContent = timeStr;
+            }
+        }
+        
+        // Mosque data - in a real app this would come from an API
+        const mosques = {
+            'central': {
+                name: 'Central Jamia Masjid',
+                city: 'New York',
+                city: 'New York',
+                fajr: '5:15 AM',
+                dhuhr: '1:15 PM',
+                asr: '4:30 PM',
+                maghrib: '6:45 PM',
+                isha: '8:15 PM'
+            },
+            'shah': {
+                name: 'Shah Faisal Masjid',
+                fajr: '5:30 AM',
+                dhuhr: '1:20 PM',
+                asr: '4:45 PM',
+                maghrib: '7:00 PM',
+                isha: '8:30 PM'
+            },
+            'islamic-center': {
+                name: 'Islamic Center',
+                fajr: '5:20 AM',
+                dhuhr: '1:10 PM',
+                asr: '4:40 PM',
+                maghrib: '6:50 PM',
+                isha: '8:20 PM'
+            },
+            'grand': {
+                name: 'Grand Mosque',
+                fajr: '5:10 AM',
+                dhuhr: '1:05 PM',
+                asr: '4:35 PM',
+                maghrib: '6:40 PM',
+                isha: '8:10 PM'
+            }
+        };
+
+        // Update prayer times based on selected mosque
+        function updateMosquePrayerTimes(mosqueId) {
+            if (!mosqueId) return;
+            
+            const mosque = mosques[mosqueId];
+            if (mosque) {
+                document.getElementById('location-name').textContent = mosque.name;
+                document.getElementById('fajr-card').querySelector('p').textContent = mosque.fajr;
+                document.getElementById('dhuhr-card').querySelector('p').textContent = mosque.dhuhr;
+                document.getElementById('asr-card').querySelector('p').textContent = mosque.asr;
+                document.getElementById('maghrib-card').querySelector('p').textContent = mosque.maghrib;
+                document.getElementById('isha-card').querySelector('p').textContent = mosque.isha;
+            }
+        }
+
+        // Mosque selection functionality
+        document.getElementById('mosque-select').addEventListener('change', function() {
+            updateMosquePrayerTimes(this.value);
+        });
+
+        // Location button functionality
+        document.getElementById('location-btn').addEventListener('click', function() {
+            // This would normally get the actual location from user
+            const locations = ['New York', 'London', 'Dubai', 'Kuala Lumpur', 'Istanbul'];
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+            document.getElementById('location-name').textContent = randomLocation;
+            
+            // Simulate loading new prayer times
+            const loadingToast = document.createElement('div');
+            loadingToast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300 opacity-0';
+            loadingToast.textContent = 'Updating prayer times for ' + randomLocation;
+            document.body.appendChild(loadingToast);
+            
+            setTimeout(() => {
+                loadingToast.classList.remove('opacity-0');
+                loadingToast.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    loadingToast.classList.remove('opacity-100');
+                    loadingToast.classList.add('opacity-0');
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(loadingToast);
+                    }, 300);
+                }, 2000);
+            }, 100);
+        });
+        
+        // Admin login functionality
+        document.getElementById('admin-login-btn').addEventListener('click', function() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('cancel-login').addEventListener('click', function() {
+            document.getElementById('login-modal').classList.add('hidden');
+        });
+
+        // Update mosque dropdown menu
+        function updateMosqueDropdowns() {
+            const mosqueSelect = document.getElementById('mosque-select');
+            const adminMosqueSelect = document.getElementById('admin-mosque-select');
+            
+            // Clear existing options except first one
+            while (mosqueSelect.options.length > 1) mosqueSelect.remove(1);
+            while (adminMosqueSelect.options.length > 1) adminMosqueSelect.remove(1);
+            
+            // Add all mosques
+            Object.keys(mosques).forEach(id => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = `${mosques[id].name} (${mosques[id].city})`;
+                mosqueSelect.appendChild(option.cloneNode(true));
+                adminMosqueSelect.appendChild(option);
+            });
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const adminType = document.getElementById('admin-type').value;
+            const mosqueId = document.getElementById('admin-mosque-select').value;
+            const password = document.getElementById('admin-password').value;
+            
+            // Demo authentication
+            if ((adminType === 'master' && password === 'master123') || 
+                (adminType === 'mosque' && password === 'admin123')) {
+                
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                
+                // Show/hide management buttons based on admin type
+                document.getElementById('delete-mosque-btn').classList.toggle('hidden', adminType !== 'master');
+                
+                // Load current times for the selected mosque
+                if (adminType === 'mosque') {
+                    const mosque = mosques[mosqueId];
+                    if (mosque) {
+                        document.getElementById('admin-fajr').value = mosque.fajr.replace(' AM', '').replace(' PM', '');
+                        document.getElementById('admin-dhuhr').value = mosque.dhuhr.replace(' AM', '').replace(' PM', '');
+                        document.getElementById('admin-asr').value = mosque.asr.replace(' AM', '').replace(' PM', '');
+                        document.getElementById('admin-maghrib').value = mosque.maghrib.replace(' AM', '').replace(' PM', '');
+                        document.getElementById('admin-isha').value = mosque.isha.replace(' AM', '').replace(' PM', '');
+                    }
+                }
+            } else {
+                alert('Incorrect password');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('admin-panel').classList.add('hidden');
+        });
+
+        document.getElementById('delete-mosque-btn').addEventListener('click', function() {
+            const mosqueId = document.getElementById('admin-mosque-select').value;
+            if (mosqueId && confirm(`Delete ${mosques[mosqueId].name} permanently?`)) {
+                delete mosques[mosqueId];
+                updateMosqueDropdowns();
+                alert('Mosque deleted successfully!');
+            }
+        });
+
+        // Add Mosque functionality
+        document.getElementById('add-mosque-btn').addEventListener('click', function() {
+            document.getElementById('add-mosque-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('cancel-add-mosque').addEventListener('click', function() {
+            document.getElementById('add-mosque-modal').classList.add('hidden');
+        });
+
+        document.getElementById('add-mosque-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mosqueId = 'mosque-' + Date.now().toString().slice(-5);
+            const mosqueName = document.getElementById('new-mosque-name').value;
+            
+            mosques[mosqueId] = {
+                name: mosqueName,
+                address: document.getElementById('new-mosque-address').value,
+                city: document.getElementById('new-mosque-city').value,
+                state: document.getElementById('new-mosque-state').value,
+                pincode: document.getElementById('new-mosque-pincode').value,
+                country: document.getElementById('new-mosque-country').value,
+                fajr: document.getElementById('new-fajr').value + ' AM',
+                dhuhr: document.getElementById('new-dhuhr').value + ' PM',
+                asr: document.getElementById('new-asr').value + ' PM',
+                maghrib: document.getElementById('new-maghrib').value + ' PM',
+                isha: document.getElementById('new-isha').value + ' PM'
+            };
+
+            // Update mosque dropdowns
+            const option = document.createElement('option');
+            option.value = mosqueId;
+            option.textContent = mosqueName;
+            
+            document.getElementById('mosque-select').appendChild(option);
+            document.getElementById('admin-mosque-select').appendChild(option.cloneNode(true));
+            
+            // Reset and close
+            document.getElementById('add-mosque-form').reset();
+            document.getElementById('add-mosque-modal').classList.add('hidden');
+            alert('Mosque added successfully!');
+        });
+
+        document.getElementById('times-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mosqueId = document.getElementById('admin-mosque-select').value;
+            
+            // Update mosque times
+            mosques[mosqueId].fajr = document.getElementById('admin-fajr').value + ' AM';
+            mosques[mosqueId].dhuhr = document.getElementById('admin-dhuhr').value + ' PM';
+            mosques[mosqueId].asr = document.getElementById('admin-asr').value + ' PM';
+            mosques[mosqueId].maghrib = document.getElementById('admin-maghrib').value + ' PM';
+            mosques[mosqueId].isha = document.getElementById('admin-isha').value + ' PM';
+            
+            // Update UI
+            updateMosquePrayerTimes(mosqueId);
+            document.getElementById('admin-panel').classList.add('hidden');
+            alert('Prayer times updated successfully!');
+        });
+
+        // Initialize and update time every second
+        updateCurrentTime();
+        setupBroadcast();
+        setInterval(updateCurrentTime, 1000);
+    </script>
+</body>
+</html>
+
