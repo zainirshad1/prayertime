@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Namaz Prayer Times</title>
+    <title>Namaz Times</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -32,7 +32,7 @@
         <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
             <h2 class="text-xl font-semibold text-gray-800">Select Masjid</h2>
             <select id="masjid-select" class="bg-green-100 text-green-800 font-medium py-2 px-4 rounded-lg">
-                <option value="">Loading masjid list...</option>
+                <option value="">Choose nearby masjid</option>
             </select>
             <button id="location-btn" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-lg mt-2" aria-label="Get My Location">
                 Get My Location
@@ -58,6 +58,16 @@
         const SHEET_ID = '1VGGE-i2lBJ1E_HkUFCrfdlBLKQJZOKyeaN6ZmdbniVE'; // Your Google Sheet ID
         const API_KEY = 'AIzaSyACQUblz-jRQ5QJiIoVjRLbX8rcDMkV17o'; // Your Google API Key
         const RANGE = 'Sheet1!B1:N'; // Adjust the range according to your sheet
+
+        // Default prayer times for Hanafi school in Bangalore
+        const defaultPrayerTimes = {
+            Fajr: "05:30",
+            Dhuhr: "12:30",
+            Asr: "15:45",
+            Maghrib: "18:30",
+            Isha: "19:45",
+            Jumuah: "13:15"
+        };
 
         // Function to fetch masjid data from Google Sheets
         async function fetchMasjidData() {
@@ -104,6 +114,15 @@
             if (selectedRow) {
                 const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
                 const prayerTimes = [];
+                const rakatsInfo = [
+                    { farz: 2, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
+                    { farz: 4, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
+                    { farz: 4, sunnah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
+                    { farz: 3, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
+                    { farz: 4, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Isha
+                    { farz: 2, sunnah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
+                ];
+
                 for (let i = 0; i < prayerNames.length; i++) {
                     const azanTime = selectedRow[i * 2 + 1]; // Azan times are in odd columns (C, E, G, I, K, M)
                     const prayerTime = selectedRow[i * 2 + 2]; // Prayer times are in even columns (D, F, H, J, L, N)
@@ -115,6 +134,7 @@
                             <h3 class="font-bold text-gray-500">${prayerNames[i]}</h3>
                             <p class="text-gray-500">Azan: ${azanTime}</p>
                             <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayerTime}</p>
+                            <p class="text-gray-500">Farz: ${raksInfo[i].farz}, Sunnah: ${raksInfo[i].sunnah}, Nafil: ${raksInfo[i].nafil}, Mandatory Nafil: ${raksInfo[i].mandatoryNafil}, Witr: ${raksInfo[i].witr}</p>
                         </div>
                         <button onclick="toggleAzan('${prayerNames[i]}-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="${prayerNames[i]}-btn" aria-label="Stop Azan for ${prayerNames[i]}">Stop Azan</button>
                         <audio id="${prayerNames[i]}-azan" src="path/to/${prayerNames[i].toLowerCase()}-azan.mp3"></audio>
@@ -122,7 +142,40 @@
                     prayerTimesDiv.appendChild(prayerCard);
                 }
                 updateNextPrayer(prayerTimes);
+            } else {
+                // Display default prayer times if no masjid is selected
+                displayDefaultPrayerTimes();
             }
+        }
+
+        // Function to display default prayer times for Hanafi school
+        function displayDefaultPrayerTimes() {
+            const prayerTimesDiv = document.getElementById('prayer-times');
+            prayerTimesDiv.innerHTML = ''; // Clear previous times
+
+            const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
+            const rakatsInfo = [
+                { farz: 2, muakkadhasunnah: 2 }, // Fajr
+                { muakkadhasunnah: 4, farz: 4, muakkadhasunnah: 2, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Dhuhr
+                { sunnah: 4, farz: 4 }, // Asr
+                { farz: 3, muakkadhasunnah: 2, nafil: 2 }, // Maghrib
+                { sunnah: 4, farz: 4, muakkadhasunnah: 2, nafil: 0, witr: 3, nafil: 2 }, // Isha
+                { muakkadhasunnah: 4, farz: 2, muakkadhasunnah: 4, muakkadhasunnah: 2, nafil: 2 }  // Jumuah
+            ];
+
+            for (let i = 0; i < prayerNames.length; i++) {
+                const prayerCard = document.createElement('div');
+                prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500';
+                prayerCard.innerHTML = `
+                    <div>
+                        <h3 class="font-bold text-gray-500">${prayerNames[i]}</h3>
+                        <p class="text-2xl font-semibold text-gray-800">Prayer: ${defaultPrayerTimes[prayerNames[i]]}</p>
+                        <p class="text-gray-500">Farz: ${raksInfo[i].farz}, Sunnah: ${raksInfo[i].sunnah}, Nafil: ${raksInfo[i].nafil}, Mandatory Nafil: ${raksInfo[i].mandatoryNafil}, Witr: ${raksInfo[i].witr}</p>
+                    </div>
+                `;
+                prayerTimesDiv.appendChild(prayerCard);
+            }
+            updateNextPrayer(Object.values(defaultPrayerTimes));
         }
 
         // Function to update current time and date
@@ -147,9 +200,19 @@
         // Function to update next prayer time and duration left
         function updateNextPrayer(prayerTimes) {
             const now = new Date();
-            const nextPrayer = prayerTimes.find(time => new Date(`1970-01-01T${time}:00`) > now);
+            let nextPrayer = null;
+            let nextPrayerTime = null;
+
+            for (const prayerTime of prayerTimes) {
+                const prayerDateTime = new Date(`1970-01-01T${prayerTime}:00`);
+                if (prayerDateTime > now) {
+                    nextPrayer = prayerTime;
+                    nextPrayerTime = prayerDateTime;
+                    break;
+                }
+            }
+
             if (nextPrayer) {
-                const nextPrayerTime = new Date(`1970-01-01T${nextPrayer}:00`);
                 const durationLeft = Math.floor((nextPrayerTime - now) / 1000 / 60); // Duration in minutes
                 document.getElementById('next-prayer-name').textContent = nextPrayer;
                 document.getElementById('next-prayer-time').textContent = nextPrayerTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
