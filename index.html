@@ -55,7 +55,7 @@
     <script>
         const SHEET_ID = '1VGGE-i2lBJ1E_HkUFCrfdlBLKQJZOKyeaN6ZmdbniVE'; // Your Google Sheet ID
         const API_KEY = 'AIzaSyACQUblz-jRQ5QJiIoVjRLbX8rcDMkV17o'; // Your Google API Key
-        const RANGE = 'Sheet1!A1:F'; // Adjust the range according to your sheet
+        const RANGE = 'Sheet1!B1:F'; // Adjust the range according to your sheet (B for masjid names, F for last prayer time)
 
         // Function to fetch masjid data from Google Sheets
         async function fetchMasjidData() {
@@ -72,21 +72,20 @@
             masjidData.forEach((row, index) => {
                 if (index === 0) return; // Skip header row
                 const option = document.createElement('option');
-                option.value = row[0]; // Assuming the first column is the masjid name
+                option.value = row[0]; // Assuming the first column in the range is the masjid name
                 option.textContent = row[0];
                 masjidSelect.appendChild(option);
             });
         }
 
         // Function to display prayer times for the selected masjid
-        function displayPrayerTimes(masjid) {
+        async function displayPrayerTimes(masjid) {
             const prayerTimesDiv = document.getElementById('prayer-times');
             prayerTimesDiv.innerHTML = ''; // Clear previous times
 
             // Fetch prayer times based on selected masjid
-            const selectedMasjid = masjidSelect.value;
             const masjidData = await fetchMasjidData();
-            const selectedRow = masjidData.find(row => row[0] === selectedMasjid);
+            const selectedRow = masjidData.find(row => row[0] === masjid);
 
             if (selectedRow) {
                 const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
