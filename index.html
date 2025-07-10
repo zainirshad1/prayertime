@@ -112,36 +112,28 @@
             const selectedRow = masjidData.find(row => row[0] === masjid);
 
             if (selectedRow) {
-                const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
-                const prayerTimes = [];
-                const rakatsInfo = [
-                    { farz: 2, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
-                    { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
-                    { farz: 4, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
-                    { farz: 3, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
-                    { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 3 }, // Isha
-                    { farz: 2, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
+                const prayerDetails = [
+                    { name: 'Fajr', azanTime: selectedRow[1], prayerTime: selectedRow[2], rakats: { sunnahMuakkadah: 2, farz: 2 } },
+                    { name: 'Dhuhr', azanTime: selectedRow[3], prayerTime: selectedRow[4], rakats: { sunnahMuakkadah: 4, farz: 4, SunnahMuakkadah: 2, nafil: 2} },
+                    { name: 'Asr', azanTime: selectedRow[5], prayerTime: selectedRow[6], rakats: { farz: 4, sunnahGhairMuakkadah: 4 } },
+                    { name: 'Maghrib', azanTime: selectedRow[7], prayerTime: selectedRow[8], rakats: { farz: 3, sunnahMuakkadah: 2, nafil: 2} },
+                    { name: 'Isha', azanTime: selectedRow[9], prayerTime: selectedRow[10], rakats: { sunnahGhairMuakkadah: 4, farz: 4, sunnahMuakkadah: 2, nafil: 2, witr: 3, Nafil: 2 } },
+                    { name: 'Jumuah', azanTime: selectedRow[11], prayerTime: selectedRow[12], rakats: { sunnahMuakkadah: 4, farz: 2, SunnahMuakkadah: 4, Sunnah_Muakkadah: 2, nafil: 2 } }
                 ];
 
-                for (let i = 0; i < prayerNames.length; i++) {
-                    const azanTime = selectedRow[i * 2 + 1]; // Azan times are in odd columns (C, E, G, I, K, M)
-                    const prayerTime = selectedRow[i * 2 + 2]; // Prayer times are in even columns (D, F, H, J, L, N)
-                    prayerTimes.push(prayerTime);
+                // Create a separate card for each prayer
+                prayerDetails.forEach(prayer => {
                     const prayerCard = document.createElement('div');
-                    prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500';
+                    prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 mb-4 border-l-4 border-blue-500';
                     prayerCard.innerHTML = `
-                        <div>
-                            <h3 class="font-bold text-gray-500">${prayerNames[i]}</h3>
-                            <p class="text-gray-500">Azan: ${azanTime}</p>
-                            <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayerTime}</p>
-                            <p class="text-gray-500">Farz: ${rakatsInfo[i].farz}, Sunnah Mu'akkadah: ${rakatsInfo[i].sunnahMuakkadah}, Sunnah Ghair Mu'akkadah: ${rakatsInfo[i].sunnahGhairMuakkadah}, Nafil: ${rakatsInfo[i].nafil}, Mandatory Nafil: ${rakatsInfo[i].mandatoryNafil}, Witr: ${rakatsInfo[i].witr}</p>
-                        </div>
-                        <button onclick="toggleAzan('${prayerNames[i]}-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="${prayerNames[i]}-btn" aria-label="Stop Azan for ${prayerNames[i]}">Stop Azan</button>
-                        <audio id="${prayerNames[i]}-azan" src="path/to/${prayerNames[i].toLowerCase()}-azan.mp3"></audio>
+                        <h3 class="font-bold text-gray-500">${prayer.name}</h3>
+                        <p class="text-gray-500">Azan: ${prayer.azanTime}</p>
+                        <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayer.prayerTime}</p>
+                        <p class="text-gray-500">Farz: ${prayer.rakats.farz}, Sunnah Mu'akkadah: ${prayer.rakats.sunnahMuakkadah}, Sunnah Ghair Mu'akkadah: ${prayer.rakats.sunnahGhairMuakkadah}, Nafil: ${prayer.rakats.nafil}, Sunnah Mu'akkadah: ${prayer.rakats.SunnahMuakkadah},Sunnah Mu'akkadah: ${prayer.rakats.Sunnah_Muakkadah}, Witr: ${prayer.rakats.witr}</p>
                     `;
                     prayerTimesDiv.appendChild(prayerCard);
-                }
-                updateNextPrayer(prayerTimes);
+                });
+                updateNextPrayer(prayerDetails.map(p => p.prayerTime));
             } else {
                 // Display default prayer times if no masjid is selected
                 displayDefaultPrayerTimes();
@@ -153,28 +145,25 @@
             const prayerTimesDiv = document.getElementById('prayer-times');
             prayerTimesDiv.innerHTML = ''; // Clear previous times
 
-            const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
-            const rakatsInfo = [
-                { farz: 2, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
-                { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
-                { farz: 4, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
-                { farz: 3, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
-                { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 3 }, // Isha
-                { farz: 2, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
+            const prayerDetails = [
+                    { name: 'Fajr', azanTime: selectedRow[1], prayerTime: selectedRow[2], rakats: { sunnahMuakkadah: 2, farz: 2 } },
+                    { name: 'Dhuhr', azanTime: selectedRow[3], prayerTime: selectedRow[4], rakats: { sunnahMuakkadah: 4, farz: 4, SunnahMuakkadah: 2, nafil: 2} },
+                    { name: 'Asr', azanTime: selectedRow[5], prayerTime: selectedRow[6], rakats: { farz: 4, sunnahGhairMuakkadah: 4 } },
+                    { name: 'Maghrib', azanTime: selectedRow[7], prayerTime: selectedRow[8], rakats: { farz: 3, sunnahMuakkadah: 2, nafil: 2} },
+                    { name: 'Isha', azanTime: selectedRow[9], prayerTime: selectedRow[10], rakats: { sunnahGhairMuakkadah: 4, farz: 4, sunnahMuakkadah: 2, nafil: 2, witr: 3, Nafil: 2 } },
+                    { name: 'Jumuah', azanTime: selectedRow[11], prayerTime: selectedRow[12], rakats: { sunnahMuakkadah: 4, farz: 2, SunnahMuakkadah: 4, Sunnah_Muakkadah: 2, nafil: 2 } }
             ];
 
-            for (let i = 0; i < prayerNames.length; i++) {
+            // Create a separate card for each prayer
+            prayerDetails.forEach(prayer => {
                 const prayerCard = document.createElement('div');
-                prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500';
+                prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 mb-4 border-l-4 border-blue-500';
                 prayerCard.innerHTML = `
-                    <div>
-                        <h3 class="font-bold text-gray-500">${prayerNames[i]}</h3>
-                        <p class="text-2xl font-semibold text-gray-800">Prayer: ${defaultPrayerTimes[prayerNames[i]]}</p>
-                        <p class="text-gray-500">Farz: ${rakatsInfo[i].farz}, Sunnah Mu'akkadah: ${rakatsInfo[i].sunnahMuakkadah}, Sunnah Ghair Mu'akkadah: ${rakatsInfo[i].sunnahGhairMuakkadah}, Nafil: ${rakatsInfo[i].nafil}, Mandatory Nafil: ${rakatsInfo[i].mandatoryNafil}, Witr: ${rakatsInfo[i].witr}</p>
-                    </div>
-                `;
+                    <h3 class="font-bold text-gray-500">${prayer.name}</h3>
+                    <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayer.prayerTime}</p>
+                    <p class="text-gray-500">Farz: ${prayer.rakats.farz}, Sunnah Mu'akkadah: ${prayer.rakats.sunnahMuakkadah}, Sunnah Ghair Mu'akkadah: ${prayer.rakats.sunnahGhairMuakkadah}, Nafil: ${prayer.rakats.nafil}, Sunnah Mu'akkadah: ${prayer.rakats.SunnahMuakkadah},Sunnah Mu'akkadah: ${prayer.rakats.Sunnah_Muakkadah}, Witr: ${prayer.rakats.witr}</p>                `;
                 prayerTimesDiv.appendChild(prayerCard);
-            }
+            });
             updateNextPrayer(Object.values(defaultPrayerTimes));
         }
 
