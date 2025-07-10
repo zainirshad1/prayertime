@@ -6,8 +6,6 @@
     <title>Namaz Prayer Times</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-hijri/2.1.0/moment-hijri.min.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -27,35 +25,89 @@
     <div class="bg-green-700 text-white py-8 px-6 rounded-b-3xl shadow-lg">
         <h1 class="text-2xl font-bold">Namaz Times</h1>
         <p id="current-date" class="text-green-100">Loading date...</p>
-        <p id="islamic-date" class="text-green-100">Loading Islamic date...</p>
     </div>
 
     <div class="container mx-auto px-4 py-8 flex-1">
         <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
             <h2 class="text-xl font-semibold text-gray-800">Selected Masjid/Nearby Masjid</h2>
             <button id="masjid-btn" class="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-2 px-4 rounded-lg">
-                <span id="masjid-name">Bangalore, India</span>
+                <span id="masjid-name">Select a Masjid</span>
             </button>
             <button id="location-btn" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-lg mt-2">
                 Get My Location
             </button>
-            <div class="mt-4">
-                <label for="timing-method" class="block text-gray-700">Select Timing Method:</label>
-                <select id="timing-method" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                    <option value="hanafi">Hanafi</option>
-                    <option value="shafi">Shafi</option>
-                    <option value="maliki">Maliki</option>
-                    <option value="hanbali">Hanbali</option>
-                </select>
-            </div>
-            <div class="text-center mt-4">
+            <div class="text-center">
                 <p class="text-4xl font-bold text-green-700 mb-2" id="current-time">--:-- --</p>
                 <p class="text-gray-500">Next Prayer: <span id="next-prayer-name" class="font-medium text-green-600">None</span> at <span id="next-prayer-time" class="font-medium text-green-600">--:-- --</span></p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="prayer-times">
-            <!-- Prayer cards will be populated here -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div id="fajr-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Fajr</h3>
+                    <p class="text-2xl font-semibold text-gray-800">05:30 AM</p>
+                    <p class="text-gray-500">Azan: 05:15 AM</p>
+                    <p class="text-gray-500">Last Time: 06:00 AM</p>
+                </div>
+                <button onclick="toggleAzan('fajr-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="fajr-btn">Stop Azan</button>
+                <audio id="fajr-azan" src="path/to/fajr-azan.mp3"></audio>
+            </div>
+
+            <div id="dhuhr-card" class="prayer-card current-prayer bg-gradient-to-r from-green-50 to-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-yellow-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Dhuhr</h3>
+                    <p class="text-2xl font-semibold text-gray-800">01:15 PM</p>
+                    <p class="text-gray-500">Azan: 01:00 PM</p>
+                    <p class="text-gray-500">Last Time: 02:30 PM</p>
+                </div>
+                <button onclick="toggleAzan('dhuhr-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="dhuhr-btn">Stop Azan</button>
+                <audio id="dhuhr-azan" src="path/to/dhuhr-azan.mp3"></audio>
+            </div>
+
+            <div id="asr-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-orange-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Asr</h3>
+                    <p class="text-2xl font-semibold text-gray-800">04:45 PM</p>
+                    <p class="text-gray-500">Azan: 04:30 PM</p>
+                    <p class="text-gray-500">Last Time: 05:45 PM</p>
+                </div>
+                <button onclick="toggleAzan('asr-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="asr-btn">Stop Azan</button>
+                <audio id="asr-azan" src="path/to/asr-azan.mp3"></audio>
+            </div>
+
+            <div id="maghrib-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-red-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Maghrib</h3>
+                    <p class="text-2xl font-semibold text-gray-800">06:30 PM</p>
+                    <p class="text-gray-500">Azan: 06:15 PM</p>
+                    <p class="text-gray-500">Last Time: 07:45 PM</p>
+                </div>
+                <button onclick="toggleAzan('maghrib-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="maghrib-btn">Stop Azan</button>
+                <audio id="maghrib-azan" src="path/to/maghrib-azan.mp3"></audio>
+            </div>
+
+            <div id="isha-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-purple-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Isha</h3>
+                    <p class="text-2xl font-semibold text-gray-800">08:00 PM</p>
+                    <p class="text-gray-500">Azan: 07:45 PM</p>
+                    <p class="text-gray-500">Last Time: 09:15 PM</p>
+                </div>
+                <button onclick="toggleAzan('isha-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="isha-btn">Stop Azan</button>
+                <audio id="isha-azan" src="path/to/isha-azan.mp3"></audio>
+            </div>
+
+            <div id="jumuah-card" class="prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-green-500">
+                <div>
+                    <h3 class="font-bold text-gray-500">Jumu'ah</h3>
+                    <p class="text-2xl font-semibold text-gray-800">01:15 PM</p>
+                    <p class="text-gray-500">Azan: 01:00 PM</p>
+                    <p class="text-gray-500">Last Time: 02:00 PM</p>
+                </div>
+                <button onclick="toggleAzan('jumuah-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="jumuah-btn">Stop Azan</button>
+                <audio id="jumuah-azan" src="path/to/jumuah-azan.mp3"></audio>
+            </div>
         </div>
     </div>
 
@@ -67,92 +119,6 @@
     </footer>
 
     <script>
-        // Default prayer times for Bangalore, India
-        const prayerTimes = {
-            hanafi: {
-                fajr: { time: "05:30 AM", azan: "05:15 AM", last: "06:00 AM" },
-                dhuhr: { time: "01:15 PM", azan: "01:00 PM", last: "02:30 PM" },
-                asr: { time: "04:45 PM", azan: "04:30 PM", last: "05:45 PM" },
-                maghrib: { time: "06:30 PM", azan: "06:15 PM", last: "07:45 PM" },
-                isha: { time: "08:00 PM", azan: "07:45 PM", last: "09:15 PM" },
-                jumuah: { time: "01:15 PM", azan: "01:00 PM", last: "02:00 PM" }
-            },
-            shafi: {
-                fajr: { time: "05:15 AM", azan: "05:00 AM", last: "06:00 AM" },
-                dhuhr: { time: "01:00 PM", azan: "12:45 PM", last: "02:30 PM" },
-                asr: { time: "04:30 PM", azan: "04:15 PM", last: "05:45 PM" },
-                maghrib: { time: "06:30 PM", azan: "06:15 PM", last: "07:45 PM" },
-                isha: { time: "07:45 PM", azan: "07:30 PM", last: "09:15 PM" },
-                jumuah: { time: "01:00 PM", azan: "12:45 PM", last: "02:00 PM" }
-            },
-            maliki: {
-                fajr: { time: "05:20 AM", azan: "05:05 AM", last: "06:00 AM" },
-                dhuhr: { time: "01:10 PM", azan: "12:55 PM", last: "02:30 PM" },
-                asr: { time: "04:40 PM", azan: "04:25 PM", last: "05:45 PM" },
-                maghrib: { time: "06:30 PM", azan: "06:15 PM", last: "07:45 PM" },
-                isha: { time: "08:05 PM", azan: "07:50 PM", last: "09:15 PM" },
-                jumuah: { time: "01:10 PM", azan: "12:55 PM", last: "02:00 PM" }
-            },
-            hanbali: {
-                fajr: { time: "05:25 AM", azan: "05:10 AM", last: "06:00 AM" },
-                dhuhr: { time: "01:20 PM", azan: "01:05 PM", last: "02:30 PM" },
-                asr: { time: "04:50 PM", azan: "04:35 PM", last: "05:45 PM" },
-                maghrib: { time: "06:30 PM", azan: "06:15 PM", last: "07:45 PM" },
-                isha: { time: "08:10 PM", azan: "07:55 PM", last: "09:15 PM" },
-                jumuah: { time: "01:20 PM", azan: "01:05 PM", last: "02:00 PM" }
-            }
-        };
-
-        // Function to update prayer times based on selected method
-        function updatePrayerTimes(method) {
-            const times = prayerTimes[method];
-            const prayerTimesContainer = document.getElementById('prayer-times');
-            prayerTimesContainer.innerHTML = ''; // Clear existing times
-
-            for (const [prayer, details] of Object.entries(times)) {
-                const card = document.createElement('div');
-                card.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500';
-                card.innerHTML = `
-                    <div>
-                        <h3 class="font-bold text-gray-500">${prayer.charAt(0).toUpperCase() + prayer.slice(1)}</h3>
-                        <p class="text-2xl font-semibold text-gray-800">${details.time}</p>
-                        <p class="text-gray-500">Azan: ${details.azan}</p>
-                        <p class="text-gray-500">Last Time: ${details.last}</p>
-                    </div>
-                    <button onclick="toggleAzan('${prayer}-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="${prayer}-btn">Stop Azan</button>
-                    <audio id="${prayer}-azan" src="path/to/${prayer}-azan.mp3"></audio>
-                `;
-                prayerTimesContainer.appendChild(card);
-            }
-
-            // Update the next prayer
-            updateNextPrayer(times);
-        }
-
-        // Function to update the next prayer based on current time
-        function updateNextPrayer(times) {
-            const now = moment();
-            let nextPrayer = null;
-            let nextPrayerTime = null;
-
-            for (const [prayer, details] of Object.entries(times)) {
-                const prayerTime = moment(details.time, "hh:mm A");
-                if (now.isBefore(prayerTime)) {
-                    nextPrayer = prayer.charAt(0).toUpperCase() + prayer.slice(1);
-                    nextPrayerTime = details.time;
-                    break;
-                }
-            }
-
-            if (nextPrayer) {
-                document.getElementById('next-prayer-name').textContent = nextPrayer;
-                document.getElementById('next-prayer-time').textContent = nextPrayerTime;
-            } else {
-                document.getElementById('next-prayer-name').textContent = "Isha";
-                document.getElementById('next-prayer-time').textContent = times.isha.time;
-            }
-        }
-
         // Function to update current time and prayer times
         function updateCurrentTime() {
             const now = new Date();
@@ -161,10 +127,6 @@
             
             const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
             document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', dateOptions);
-
-            // Update Islamic date
-            const islamicDate = moment(now).format('iYYYY/iM/iD'); // Format: Islamic Year/Month/Day
-            document.getElementById('islamic-date').textContent = `Islamic Date: ${islamicDate}`;
         }
 
         // Function to get user's location
@@ -180,6 +142,8 @@
         function showPosition(position) {
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
+            // Here you can use the lat and lon to find the nearest mosque
+            // For demonstration, we'll just display the coordinates
             document.getElementById('masjid-name').textContent = `Lat: ${lat}, Lon: ${lon}`;
         }
 
@@ -187,7 +151,7 @@
         function showError(error) {
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.");
+                    alert("User  denied the request for Geolocation.");
                     break;
                 case error.POSITION_UNAVAILABLE:
                     alert("Location information is unavailable.");
@@ -220,17 +184,6 @@
 
         // Add event listener for location button
         document.getElementById('location-btn').addEventListener('click', getLocation);
-
-        // Add event listener for timing method selection
-        document.getElementById('timing-method').addEventListener('change', function() {
-            const selectedMethod = this.value;
-            updatePrayerTimes(selectedMethod);
-        });
-
-        // Set default timing method and update prayer times
-        const defaultMethod = 'hanafi';
-        document.getElementById('timing-method').value = defaultMethod;
-        updatePrayerTimes(defaultMethod);
     </script>
 </body>
 </html>
