@@ -25,6 +25,7 @@
     <div class="bg-green-700 text-white py-8 px-6 rounded-b-3xl shadow-lg">
         <h1 class="text-2xl font-bold">Namaz Times</h1>
         <p id="current-date" class="text-green-100">Loading date...</p>
+        <p id="hijri-date" class="text-green-100">Loading Hijri date...</p>
     </div>
 
     <div class="container mx-auto px-4 py-8 flex-1">
@@ -39,6 +40,7 @@
             <div class="text-center">
                 <p class="text-4xl font-bold text-green-700 mb-2" id="current-time">--:-- --</p>
                 <p class="text-gray-500">Next Prayer: <span id="next-prayer-name" class="font-medium text-green-600">None</span> at <span id="next-prayer-time" class="font-medium text-green-600">--:-- --</span></p>
+                <p class="text-gray-500">Duration Left: <span id="duration-left" class="font-medium text-green-600">--:--</span></p>
             </div>
         </div>
 
@@ -68,7 +70,7 @@
                 return data.values;
             } catch (error) {
                 console.error('Error fetching masjid data:', error);
-                alert('Failed to fetch masjid data. Please check the console for more details.');
+                document.getElementById('masjid-select').innerHTML = '<option value="">Failed to load masjid data</option>';
             }
         }
 
@@ -101,9 +103,11 @@
 
             if (selectedRow) {
                 const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
+                const prayerTimes = [];
                 for (let i = 0; i < prayerNames.length; i++) {
                     const azanTime = selectedRow[i * 2 + 1]; // Azan times are in odd columns (C, E, G, I, K, M)
                     const prayerTime = selectedRow[i * 2 + 2]; // Prayer times are in even columns (D, F, H, J, L, N)
+                    prayerTimes.push(prayerTime);
                     const prayerCard = document.createElement('div');
                     prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 flex justify-between items-center border-l-4 border-blue-500';
                     prayerCard.innerHTML = `
@@ -117,14 +121,44 @@
                     `;
                     prayerTimesDiv.appendChild(prayerCard);
                 }
+                updateNextPrayer(prayerTimes);
             }
         }
 
-        // Function to update current time
+        // Function to update current time and date
         function updateCurrentTime() {
             const now = new Date();
             const options = { hour: '2-digit', minute: '2-digit', hour12: true };
             document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', options);
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+            updateHijriDate(now);
+        }
+
+        // Function to update Hijri date
+        function updateHijriDate(date) {
+            const hijriDate = new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }).format(date);
+            document.getElementById('hijri-date').textContent = `Hijri Date: ${hijriDate}`;
+        }
+
+        // Function to update next prayer time and duration left
+        function updateNextPrayer(prayerTimes) {
+            const now = new Date();
+            const nextPrayer = prayerTimes.find(time => new Date(`1970-01-01T${time}:00`) > now);
+            if (nextPrayer) {
+                const nextPrayerTime = new Date(`1970-01-01T${nextPrayer}:00`);
+                const durationLeft = Math.floor((nextPrayerTime - now) / 1000 / 60); // Duration in minutes
+                document.getElementById('next-prayer-name').textContent = nextPrayer;
+                document.getElementById('next-prayer-time').textContent = nextPrayerTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+                document.getElementById('duration-left').textContent = `${durationLeft} min`;
+            } else {
+                document.getElementById('next-prayer-name').textContent = 'None';
+                document.getElementById('next-prayer-time').textContent = '--:-- --';
+                document.getElementById('duration-left').textContent = '--:--';
+            }
         }
 
         // Initialize the app
