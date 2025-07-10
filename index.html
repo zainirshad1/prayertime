@@ -115,12 +115,12 @@
                 const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
                 const prayerTimes = [];
                 const rakatsInfo = [
-                    { farz: 2, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
-                    { farz: 4, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
-                    { farz: 4, sunnah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
-                    { farz: 3, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
-                    { farz: 4, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 3 }, // Isha
-                    { farz: 2, sunnah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
+                    { Farz: 2, Sunnah: 2 }, // Fajr
+                    { SunnahMuakkadah: 4, Farz: 4, sunnahMuakkadah: 2, Nafil: 2 }, // Dhuhr
+                    { Farz: 4, Sunnah: 4 }, // Asr
+                    { Farz: 3, SunnahMuakkadah: 2, Nafil: 2 }, // Maghrib
+                    { SunnahMuakkadah: 4, Farz: 4, SunnahMuakkadah: 2, Nafil: 2, Witr: 3, Nafil: 2 }, // Isha
+                    { SunnahMuakkadah: 4, Farz: 2, sunnahMuakkadah: 4, sunnahmuakkadah: 2, Nafil: 2 }  // Jumuah
                 ];
 
                 for (let i = 0; i < prayerNames.length; i++) {
@@ -155,12 +155,12 @@
 
             const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
             const rakatsInfo = [
-                { farz: 2, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
-                { farz: 4, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
-                { farz: 4, sunnah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
-                { farz: 3, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
-                { farz: 4, sunnah: 2, nafil: 0, mandatoryNafil: 0, witr: 3 }, // Isha
-                { farz: 2, sunnah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
+                    { Farz: 2, Sunnah: 2 }, // Fajr
+                    { SunnahMuakkadah: 4, Farz: 4, sunnahMuakkadah: 2, Nafil: 2 }, // Dhuhr
+                    { Farz: 4, Sunnah: 4 }, // Asr
+                    { Farz: 3, SunnahMuakkadah: 2, Nafil: 2 }, // Maghrib
+                    { SunnahMuakkadah: 4, Farz: 4, SunnahMuakkadah: 2, Nafil: 2, Witr: 3, Nafil: 2 }, // Isha
+                    { SunnahMuakkadah: 4, Farz: 2, sunnahMuakkadah: 4, sunnahmuakkadah: 2, Nafil: 2 }  // Jumuah
             ];
 
             for (let i = 0; i < prayerNames.length; i++) {
