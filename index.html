@@ -115,12 +115,12 @@
                 const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
                 const prayerTimes = [];
                 const rakatsInfo = [
-                    { Farz: 2, Sunnah: 2 }, // Fajr
-                    { SunnahMuakkadah: 4, Farz: 4, sunnahMuakkadah: 2, Nafil: 2 }, // Dhuhr
-                    { Farz: 4, Sunnah: 4 }, // Asr
-                    { Farz: 3, SunnahMuakkadah: 2, Nafil: 2 }, // Maghrib
-                    { SunnahMuakkadah: 4, Farz: 4, SunnahMuakkadah: 2, Nafil: 2, Witr: 3, Nafil: 2 }, // Isha
-                    { SunnahMuakkadah: 4, Farz: 2, sunnahMuakkadah: 4, sunnahmuakkadah: 2, Nafil: 2 }  // Jumuah
+                    { farz: 2, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
+                    { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
+                    { farz: 4, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
+                    { farz: 3, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
+                    { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 3 }, // Isha
+                    { farz: 2, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
                 ];
 
                 for (let i = 0; i < prayerNames.length; i++) {
@@ -134,7 +134,7 @@
                             <h3 class="font-bold text-gray-500">${prayerNames[i]}</h3>
                             <p class="text-gray-500">Azan: ${azanTime}</p>
                             <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayerTime}</p>
-                            <p class="text-gray-500">Farz: ${rakatsInfo[i].farz}, Sunnah: ${rakatsInfo[i].sunnah}, Nafil: ${rakatsInfo[i].nafil}, Mandatory Nafil: ${rakatsInfo[i].mandatoryNafil}, Witr: ${rakatsInfo[i].witr}</p>
+                            <p class="text-gray-500">Farz: ${rakatsInfo[i].farz}, Sunnah Mu'akkadah: ${rakatsInfo[i].sunnahMuakkadah}, Sunnah Ghair Mu'akkadah: ${rakatsInfo[i].sunnahGhairMuakkadah}, Nafil: ${rakatsInfo[i].nafil}, Mandatory Nafil: ${rakatsInfo[i].mandatoryNafil}, Witr: ${rakatsInfo[i].witr}</p>
                         </div>
                         <button onclick="toggleAzan('${prayerNames[i]}-azan')" class="bg-red-500 text-white px-2 py-1 rounded" id="${prayerNames[i]}-btn" aria-label="Stop Azan for ${prayerNames[i]}">Stop Azan</button>
                         <audio id="${prayerNames[i]}-azan" src="path/to/${prayerNames[i].toLowerCase()}-azan.mp3"></audio>
@@ -155,12 +155,12 @@
 
             const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Jumuah'];
             const rakatsInfo = [
-                    { Farz: 2, Sunnah: 2 }, // Fajr
-                    { SunnahMuakkadah: 4, Farz: 4, sunnahMuakkadah: 2, Nafil: 2 }, // Dhuhr
-                    { Farz: 4, Sunnah: 4 }, // Asr
-                    { Farz: 3, SunnahMuakkadah: 2, Nafil: 2 }, // Maghrib
-                    { SunnahMuakkadah: 4, Farz: 4, SunnahMuakkadah: 2, Nafil: 2, Witr: 3, Nafil: 2 }, // Isha
-                    { SunnahMuakkadah: 4, Farz: 2, sunnahMuakkadah: 4, sunnahmuakkadah: 2, Nafil: 2 }  // Jumuah
+                { farz: 2, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Fajr
+                { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 2, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Dhuhr
+                { farz: 4, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 2, mandatoryNafil: 0, witr: 0 }, // Asr
+                { farz: 3, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 0 }, // Maghrib
+                { farz: 4, sunnahMuakkadah: 2, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 3 }, // Isha
+                { farz: 2, sunnahMuakkadah: 0, sunnahGhairMuakkadah: 0, nafil: 0, mandatoryNafil: 0, witr: 1 }  // Jumuah
             ];
 
             for (let i = 0; i < prayerNames.length; i++) {
@@ -170,7 +170,7 @@
                     <div>
                         <h3 class="font-bold text-gray-500">${prayerNames[i]}</h3>
                         <p class="text-2xl font-semibold text-gray-800">Prayer: ${defaultPrayerTimes[prayerNames[i]]}</p>
-                        <p class="text-gray-500">Farz: ${rakatsInfo[i].farz}, Sunnah: ${rakatsInfo[i].sunnah}, Nafil: ${rakatsInfo[i].nafil}, Mandatory Nafil: ${rakatsInfo[i].mandatoryNafil}, Witr: ${rakatsInfo[i].witr}</p>
+                        <p class="text-gray-500">Farz: ${rakatsInfo[i].farz}, Sunnah Mu'akkadah: ${rakatsInfo[i].sunnahMuakkadah}, Sunnah Ghair Mu'akkadah: ${rakatsInfo[i].sunnahGhairMuakkadah}, Nafil: ${rakatsInfo[i].nafil}, Mandatory Nafil: ${rakatsInfo[i].mandatoryNafil}, Witr: ${rakatsInfo[i].witr}</p>
                     </div>
                 `;
                 prayerTimesDiv.appendChild(prayerCard);
