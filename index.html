@@ -19,6 +19,35 @@
             70% { box-shadow: 0 0 0 10px rgba(26, 111, 76, 0); }
             100% { box-shadow: 0 0 0 0 rgba(26, 111, 76, 0); }
         }
+        .highlight-farz {
+            color: #2f855a; /* Darker green for Farz */
+            font-weight: bold;
+        }
+        .highlight-sunnah {
+            color: #68d391; /* Lighter green for Sunnah Muakkadah */
+            font-weight: bold;
+        }
+        .prayer-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 150px; /* Fixed height for uniformity */
+            padding: 1.5rem; /* Padding for the card */
+            border: 1px solid #e2e8f0; /* Light border for better visibility */
+            border-radius: 0.5rem; /* Rounded corners */
+            background-color: white; /* White background */
+        }
+        .rakat-list {
+            margin-left: 20px;
+            flex-shrink: 0; /* Prevent shrinking */
+            text-align: center; /* Center the text */
+        }
+        .rakat-container {
+            flex-grow: 1; /* Allow this div to grow and take available space */
+            display: flex;
+            justify-content: center; /* Center the rakat list */
+            align-items: center; /* Center vertically */
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-white">
@@ -61,12 +90,12 @@
 
         // Default prayer times for Hanafi school in Bangalore
         const defaultPrayerTimes = {
-            Fajr: "05:30",
-            Dhuhr: "12:30",
-            Asr: "15:45",
-            Maghrib: "18:30",
-            Isha: "19:45",
-            Jumuah: "13:15"
+            Fajr: { time: "05:30", end: "06:30" },
+            Dhuhr: { time: "12:30", end: "14:30" },
+            Asr: { time: "15:45", end: "17:45" },
+            Maghrib: { time: "18:30", end: "19:30" },
+            Isha: { time: "19:45", end: "21:45" },
+            Jumuah: { time: "13:15", end: "14:15" }
         };
 
         // Function to fetch masjid data from Google Sheets
@@ -105,37 +134,66 @@
         // Function to format rakat details
         function formatRakatDetails(rakats) {
             const rakatDetails = [];
-            if (rakats.sunnahMuakkadah > 0) rakatDetails.push(`Sunnah Mu'akkadah: ${rakats.sunnahMuakkadah}`);
-            if (rakats.farz > 0) rakatDetails.push(`Farz: ${rakats.farz}`);
-            if (rakats.sunnahGhairMuakkadah > 0) rakatDetails.push(`Sunnah Ghair Mu'akkadah: ${rakats.sunnahGhairMuakkadah}`);
-            if (rakats.nafil > 0) rakatDetails.push(`Nafil: ${rakats.nafil}`);
-            if (rakats.witr > 0) rakatDetails.push(`Witr: ${rakats.witr}`);
-            return rakatDetails.join(', ');
+            rakats.forEach(rakat => {
+                const type = rakat.type.charAt(0).toUpperCase() + rakat.type.slice(1); // Capitalize first letter
+                const count = rakat.count;
+                const highlightClass = (type === 'Farz') ? 'highlight-farz' : (type === 'Sunnah Muakkadah') ? 'highlight-sunnah' : '';
+                rakatDetails.push(`<li class="${highlightClass}">${type}: ${count}</li>`);
+            });
+            return `<ul class="list-disc list-inside rakat-list">${rakatDetails.join('')}</ul>`;
         }
 
         // Function to get rakats for each prayer
         function getFajrRakats() {
-            return { sunnahMuakkadah: 2, farz: 2 };
+            return [
+                { type: 'sunnahMuakkadah', count: 2 },
+                { type: 'farz', count: 2 }
+            ];
         }
 
         function getDhuhrRakats() {
-            return { sunnahMuakkadah: 4, farz: 4, sunnahMuakkadah: 2 };
+            return [
+                { type: 'sunnahMuakkadah', count: 4 },
+                { type: 'farz', count: 4 },
+                { type: 'sunnahMuakkadah', count: 2 },
+                { type: 'nafil', count: 2 }
+            ];
         }
 
         function getAsrRakats() {
-            return { sunnahGhairMuakkadah: 4, farz: 4 };
+            return [
+                { type: 'sunnah', count: 4 },
+                { type: 'farz', count: 4 }
+            ];
         }
 
         function getMaghribRakats() {
-            return { farz: 3, sunnahMuakkadah: 2, nafil: 2};
+            return [
+                { type: 'farz', count: 3 },
+                { type: 'sunnahMuakkadah', count: 2 },
+                { type: 'nafil', count: 2 }
+            ];
         }
 
         function getIshaRakats() {
-            return { sunnahGhairMuakkadah: 4, farz: 4, sunnahMuakkadah: 2, nafil: 2, witr: 3, nafil:2 };
+            return [
+                { type: 'sunnah', count: 4 },
+                { type: 'farz', count: 4 },
+                { type: 'sunnahMuakkadah', count: 2 },
+                { type: 'nafil', count: 2 },
+                { type: 'witr', count: 3 },
+                { type: 'nafil', count: 2 }
+            ];
         }
 
         function getJumuahRakats() {
-            return { sunnahMuakkadah: 4, farz: 2, sunnahMuakkadah: 4, sunnahMuakkadah: 2, nafil: 2 };
+            return [
+                { type: 'sunnahMuakkadah', count: 4 },
+                { type: 'farz', count: 2 },
+                { type: 'sunnahMuakkadah', count: 4 },
+                { type: 'sunnahMuakkadah', count: 2 },
+                { type: 'nafil', count: 2 }
+            ];
         }
 
         // Function to display prayer times and Azan times for the selected masjid
@@ -149,23 +207,28 @@
 
             if (selectedRow) {
                 const prayerDetails = [
-                    { name: 'Fajr', azanTime: selectedRow[1], prayerTime: selectedRow[2], rakats: getFajrRakats() },
-                    { name: 'Dhuhr', azanTime: selectedRow[3], prayerTime: selectedRow[4], rakats: getDhuhrRakats() },
-                    { name: 'Asr', azanTime: selectedRow[5], prayerTime: selectedRow[6], rakats: getAsrRakats() },
-                    { name: 'Maghrib', azanTime: selectedRow[7], prayerTime: selectedRow[8], rakats: getMaghribRakats() },
-                    { name: 'Isha', azanTime: selectedRow[9], prayerTime: selectedRow[10], rakats: getIshaRakats() },
-                    { name: 'Jumuah', azanTime: selectedRow[11], prayerTime: selectedRow[12], rakats: getJumuahRakats() }
+                    { name: 'Fajr', azanTime: selectedRow[1], prayerTime: selectedRow[2], endTime: defaultPrayerTimes.Fajr.end, rakats: getFajrRakats() },
+                    { name: 'Dhuhr', azanTime: selectedRow[3], prayerTime: selectedRow[4], endTime: defaultPrayerTimes.Dhuhr.end, rakats: getDhuhrRakats() },
+                    { name: 'Asr', azanTime: selectedRow[5], prayerTime: selectedRow[6], endTime: defaultPrayerTimes.Asr.end, rakats: getAsrRakats() },
+                    { name: 'Maghrib', azanTime: selectedRow[7], prayerTime: selectedRow[8], endTime: defaultPrayerTimes.Maghrib.end, rakats: getMaghribRakats() },
+                    { name: 'Isha', azanTime: selectedRow[9], prayerTime: selectedRow[10], endTime: defaultPrayerTimes.Isha.end, rakats: getIshaRakats() },
+                    { name: 'Jumuah', azanTime: selectedRow[11], prayerTime: selectedRow[12], endTime: defaultPrayerTimes.Jumuah.end, rakats: getJumuahRakats() }
                 ];
 
                 // Create a separate card for each prayer
                 prayerDetails.forEach(prayer => {
                     const prayerCard = document.createElement('div');
-                    prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 mb-4 border-l-4 border-blue-500';
+                    prayerCard.className = 'prayer-card';
                     prayerCard.innerHTML = `
-                        <h3 class="font-bold text-gray-500">${prayer.name}</h3>
-                        <p class="text-gray-500">Azan: ${prayer.azanTime}</p>
-                        <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayer.prayerTime}</p>
-                        <p class="text-gray-500">${formatRakatDetails(prayer.rakats)}</p>
+                        <div>
+                            <h3 class="font-bold text-gray-500">${prayer.name}</h3>
+                            <p class="text-gray-500">Azan: ${prayer.azanTime}</p>
+                            <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayer.prayerTime}</p>
+                            <p class="text-gray-500">End Time: ${prayer.endTime}</p>
+                        </div>
+                        <div class="rakat-container">
+                            <div class="rakat-list">${formatRakatDetails(prayer.rakats)}</div>
+                        </div>
                     `;
                     prayerTimesDiv.appendChild(prayerCard);
                 });
@@ -182,26 +245,31 @@
             prayerTimesDiv.innerHTML = ''; // Clear previous times
 
             const prayerDetails = [
-                { name: 'Fajr', prayerTime: defaultPrayerTimes.Fajr, rakats: getFajrRakats() },
-                { name: 'Dhuhr', prayerTime: defaultPrayerTimes.Dhuhr, rakats: getDhuhrRakats() },
-                { name: 'Asr', prayerTime: defaultPrayerTimes.Asr, rakats: getAsrRakats() },
-                { name: 'Maghrib', prayerTime: defaultPrayerTimes.Maghrib, rakats: getMaghribRakats() },
-                { name: 'Isha', prayerTime: defaultPrayerTimes.Isha, rakats: getIshaRakats() },
-                { name: 'Jumuah', prayerTime: defaultPrayerTimes.Jumuah, rakats: getJumuahRakats() }
+                { name: 'Fajr', prayerTime: defaultPrayerTimes.Fajr.time, endTime: defaultPrayerTimes.Fajr.end, rakats: getFajrRakats() },
+                { name: 'Dhuhr', prayerTime: defaultPrayerTimes.Dhuhr.time, endTime: defaultPrayerTimes.Dhuhr.end, rakats: getDhuhrRakats() },
+                { name: 'Asr', prayerTime: defaultPrayerTimes.Asr.time, endTime: defaultPrayerTimes.Asr.end, rakats: getAsrRakats() },
+                { name: 'Maghrib', prayerTime: defaultPrayerTimes.Maghrib.time, endTime: defaultPrayerTimes.Maghrib.end, rakats: getMaghribRakats() },
+                { name: 'Isha', prayerTime: defaultPrayerTimes.Isha.time, endTime: defaultPrayerTimes.Isha.end, rakats: getIshaRakats() },
+                { name: 'Jumuah', prayerTime: defaultPrayerTimes.Jumuah.time, endTime: defaultPrayerTimes.Jumuah.end, rakats: getJumuahRakats() }
             ];
 
             // Create a separate card for each prayer
             prayerDetails.forEach(prayer => {
                 const prayerCard = document.createElement('div');
-                prayerCard.className = 'prayer-card bg-white rounded-xl shadow-sm p-6 mb-4 border-l-4 border-blue-500';
+                prayerCard.className = 'prayer-card';
                 prayerCard.innerHTML = `
-                    <h3 class="font-bold text-gray-500">${prayer.name}</h3>
-                    <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayer.prayerTime}</p>
-                    <p class="text-gray-500">${formatRakatDetails(prayer.rakats)}</p>
+                    <div>
+                        <h3 class="font-bold text-gray-500">${prayer.name}</h3>
+                        <p class="text-2xl font-semibold text-gray-800">Prayer: ${prayer.prayerTime}</p>
+                        <p class="text-gray-500">End Time: ${prayer.endTime}</p>
+                    </div>
+                    <div class="rakat-container">
+                        <div class="rakat-list">${formatRakatDetails(prayer.rakats)}</div>
+                    </div>
                 `;
                 prayerTimesDiv.appendChild(prayerCard);
             });
-            updateNextPrayer(Object.values(defaultPrayerTimes));
+            updateNextPrayer(Object.values(defaultPrayerTimes).map(p => p.time));
         }
 
         // Function to update current time and date
