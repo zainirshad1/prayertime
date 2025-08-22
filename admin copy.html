@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - My Masjid</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f3f4f6;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 2.5rem; /* Increased padding */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            transform: translateY(-20px); /* Slight animation on open */
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #4b5563; /* Gray-600 */
+            transition: color 0.2s;
+        }
+        .close-btn:hover {
+            color: #1f2937; /* Gray-800 */
+        }
+        /* Custom message box styling */
+        #custom-message {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: bold;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+        #custom-message.show {
+            opacity: 1;
+        }
+        #custom-message.success {
+            background-color: #10B981; /* Green-500 */
+        }
+        #custom-message.error {
+            background-color: #EF4444; /* Red-500 */
+        }
+        #custom-message.info {
+            background-color: #3B82F6; /* Blue-500 */
+        }
+
+        /* Styling for the loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-green-700 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-mosque text-2xl mr-3"></i>
+                <h1 class="text-xl font-bold">Admin Portal</h1>
+            </div>
+            <nav>
+                <a href="index.html" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                    <i class="fas fa-home mr-2"></i>Back to Home
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Masjid Management Dashboard</h2>
+
+        <!-- Admin Check Loader -->
+        <div id="admin-check-loader" class="flex justify-center items-center h-64">
+            <div class="spinner"></div>
+            <p class="ml-4 text-gray-600">Checking admin status...</p>
+        </div>
+
+        <!-- Admin Content Section (hidden by default) -->
+        <div id="admin-content" class="hidden">
+            <!-- Masjid Search Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Search Masjids</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <input type="text" id="search-masjid-name" placeholder="Masjid Name" class="p-2 border rounded-md">
+                    <input type="text" id="search-zipcode" placeholder="Zipcode" class="p-2 border rounded-md">
+                    <input type="text" id="search-city" placeholder="City" class="p-2 border rounded-md">
+                </div>
+                <button id="search-masjids-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md shadow-md transition-colors">
+                    <i class="fas fa-search mr-2"></i>Search
+                </button>
+                <!-- Updated: Limited height and added scrolling for search results -->
+                <div id="search-results" class="mt-6 overflow-x-auto max-h-64 overflow-y-auto rounded-md border border-gray-200">
+                    <!-- Search results table will be populated here -->
+                </div>
+            </div>
+
+            <!-- Masjid Details Form -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Masjid Details</h3>
+                <form id="masjid-details-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="masjid-name" class="block text-sm font-medium text-gray-700">Masjid Name</label>
+                        <input type="text" id="masjid-name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="masjid-phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input type="text" id="masjid-phone" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="masjid-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="masjid-email" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="masjid-address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <input type="text" id="masjid-address" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    
+                    <!-- Re-added: masjid-area is now a <select> dropdown -->
+                    <div>
+                        <label for="masjid-area" class="block text-sm font-medium text-gray-700">Area</label>
+                        <select id="masjid-area" name="masjid-area" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">Select Locality/Area</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="masjid-zipcode" class="block text-sm font-medium text-gray-700">Zipcode</label>
+                        <input type="text" id="masjid-zipcode" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        <!-- Re-added: Div for geocoding error messages -->
+                        <div id="geocoding-error-msg" class="hidden text-red-500 text-sm mt-1"></div>
+                    </div>
+                    <div>
+                        <label for="masjid-city" class="block text-sm font-medium text-gray-700">City</label>
+                        <input type="text" id="masjid-city" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="masjid-state" class="block text-sm font-medium text-gray-700">State</label>
+                        <input type="text" id="masjid-state" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <!-- Re-added: Country Input field -->
+                    <div>
+                        <label for="masjid-country" class="block text-sm font-medium text-gray-700">Country</label>
+                        <input type="text" id="masjid-country" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="masjid-latitude" class="block text-sm font-medium text-gray-700">Latitude</label>
+                        <input type="number" step="any" id="masjid-latitude" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label for="masjid-longitude" class="block text-sm font-medium text-gray-700">Longitude</label>
+                        <input type="number" step="any" id="masjid-longitude" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="masjid-info" class="block text-sm font-medium text-gray-700">Information about Masjid</label>
+                        <textarea id="masjid-info" rows="3" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="masjid-announcements-highlights" class="block text-sm font-medium text-gray-700">Announcements/Highlights</label>
+                        <textarea id="masjid-announcements-highlights" name="masjid-announcements-highlights" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="masjid-id-display" class="block text-sm font-medium text-gray-700">Masjid ID (Auto-Generated)</label>
+                        <input type="text" id="masjid-id-display" readonly class="mt-1 block w-full p-2 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
+                    </div>
+                    <div class="md:col-span-2 flex justify-end space-x-4 mt-4">
+                        <button type="button" id="reset-masjid-btn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md shadow-md transition-colors">
+                            <i class="fas fa-undo mr-2"></i>Reset
+                        </button>
+                        <button type="submit" id="save-masjid-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md shadow-md transition-colors">
+                            <i class="fas fa-save mr-2"></i>Save Masjid Details
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Prayer Times Form -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Prayer Timings (for selected Masjid)</h3>
+                <form id="prayer-times-form">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <!-- Fajr -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Fajr</h4>
+                            <label for="fajr-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="fajr-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="fajr-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="fajr-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <!-- Dhuhr -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Dhuhr</h4>
+                            <label for="dhuhr-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="dhuhr-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="dhuhr-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="dhuhr-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <!-- Asr -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Asr</h4>
+                            <label for="asr-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="asr-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="asr-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="asr-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <!-- Maghrib -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Maghrib (Auto Updated by date and time)</h4>
+                            <label for="maghrib-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="maghrib-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="maghrib-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="maghrib-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <!-- Isha -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Isha</h4>
+                            <label for="isha-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="isha-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="isha-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="isha-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <!-- Jummah 1 -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Jummah 1</h4>
+                            <label for="jummah1-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="jummah1-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="jummah1-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="jummah1-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <!-- Jummah 2 (Optional) -->
+                        <div class="p-3 border rounded-md bg-gray-50">
+                            <h4 class="font-semibold text-gray-800 mb-2">Jummah 2 <span class="text-gray-500 text-xs">(Optional)</span></h4>
+                            <label for="jummah2-azan" class="block text-xs font-medium text-gray-600">Azan</label>
+                            <input type="time" id="jummah2-azan" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <label for="jummah2-iqama" class="block text-xs font-medium text-gray-600 mt-2">Iqama</label>
+                            <input type="time" id="jummah2-iqama" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" id="save-prayer-times-btn" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-md shadow-md transition-colors">
+                            <i class="fas fa-clock mr-2"></i>Save Prayer Times
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- The message box for custom messages -->
+    <div id="custom-message" class="hidden"></div>
+
+    <script type="module" src="js/Namaztimes/admin.js"></script>
+</body>
+</html>
