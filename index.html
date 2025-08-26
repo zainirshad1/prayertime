@@ -12,28 +12,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        /* Custom styles for the modal overlay and content, ensuring proper positioning and background.
-           These are defined here for simplicity with the CDN approach, complementing Tailwind utilities. */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* Ensure the modal is on top */
+            z-index: 1000;
         }
         .modal-content {
             background-color: white;
             padding: 2rem;
-            border-radius: 0.75rem; /* Equivalent to Tailwind's rounded-lg */
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* Custom shadow for depth */
-            max-width: 90%; /* Responsive width */
-            max-height: 90%; /* Responsive height */
-            overflow-y: auto; /* Enable scrolling for taller content */
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
             position: relative;
         }
         .close-btn {
@@ -42,13 +40,11 @@
             right: 0.75rem;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #4a5568; /* Tailwind's gray-700 */
+            color: #4a5568;
         }
-        /* Applying the Inter font globally */
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom styling for radio buttons to match a modern UI */
         input[type="radio"].form-radio {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -57,15 +53,15 @@
             width: 1rem;
             height: 1rem;
             border-radius: 50%;
-            border: 2px solid #D1D5DB; /* Tailwind's gray-300 */
+            border: 2px solid #D1D5DB;
             background-color: #ffffff;
             vertical-align: middle;
             position: relative;
             cursor: pointer;
         }
         input[type="radio"].form-radio:checked {
-            border-color: #10B981; /* Tailwind's green-600 */
-            background-color: #10B981; /* Tailwind's green-600 */
+            border-color: #10B981;
+            background-color: #10B981;
         }
         input[type="radio"].form-radio:checked::before {
             content: '';
@@ -79,6 +75,21 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .main-menu-nav {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 100%;
+            background-color: #10b981;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 500;
+            transform-origin: top;
+            transform: scaleY(0);
+            transition: transform 0.2s ease-out;
+        }
+        .main-menu-nav.active {
+            transform: scaleY(1);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -88,50 +99,86 @@
                 <i class="fas fa-mosque text-2xl mr-3"></i>
                 <h1 class="text-xl font-bold">My Masjid</h1>
             </div>
-            <nav class="flex items-center">
-                <div id="user-auth-section" class="flex items-center space-x-2">
-                    <!-- Added Admin Link (hidden by default, revealed by JS) -->
-                    <a href="admin.html" id="admin-link" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded transition-colors duration-300 hidden">
-                        <i class="fas fa-tools mr-2"></i>Admin Panel
-                    </a>
+            <nav class="flex items-center space-x-4">
+                <div class="relative md:hidden">
+                    <button id="main-menu-btn" class="text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div id="main-menu-dropdown" class="main-menu-nav hidden">
+                        <a href="quran.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">Quran</a>
+                        <a href="faq.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">F&Q</a>
+                        <a href="category.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">Category</a>
+                        <a href="about.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">About</a>
+                    </div>
+                </div>
+                
+                <div id="user-auth-section" class="relative inline-block text-left dropdown">
+                    <button id="login-btn" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                        Login
+                    </button>
+                    <div id="user-dropdown-container" class="relative inline-block text-left dropdown hidden">
+                        <div>
+                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-green-500" id="user-menu-button" aria-expanded="true" aria-haspopup="true">
+                                <i class="fas fa-user-circle mr-2"></i><span id="user-name-display">Zain Irshad</span>
+                                <i class="fas fa-caret-down ml-2"></i>
+                            </button>
+                        </div>
+                        <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <div class="py-1" role="none">
+                                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="view-profile-btn">Profile</a>
+                                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="change-password-btn">Change Password</a>
+                                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="settings-btn">Settings</a>
+                                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="qibla-direction-btn">Qibla Direction</a>
+                                <a href="admin.html" class="text-red-600 block px-4 py-2 text-sm hidden" role="menuitem" tabindex="-1" id="admin-dashboard-link"><i class="fas fa-user-shield mr-2"></i>Admin Dashboard</a>
+                                
+                                <a href="faq.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">F&Q</a>
+                                <a href="category.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Category</a>
+                                <a href="quran.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Quran</a>
+                                <a href="about.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">About</a>
+
+                                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="logout-btn">Logout</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </div>
     </header>
 
     <main class="container mx-auto p-4 md:p-8">
-        <div class="bg-green-100 p-6 rounded-lg shadow-md mb-8 text-center md:text-left">
-            <h2 id="current-english-time-header" class="text-4xl md:text-6xl font-bold text-green-800">--:-- --</h2>
-            <p class="text-green-600 mt-2 text-lg">
-                <span id="current-english-day" class="font-medium"></span>,
-                <span id="current-english-date"></span>
+        <div class="bg-green-100 p-6 rounded-lg shadow-md mb-8 text-center">
+            <h2 id="current-english-time-header" class="text-3xl md:text-5xl font-bold text-green-800 leading-none inline">--:-- --</h2>
+            <p class="text-3xl md:text-5xl text-green-600 leading-none inline ml-2">
+                <span id="current-english-day" class="font-medium"></span>
+            </p>
+            <p class="text-green-600 text-lg leading-none mt-1">
+                <span id="current-english-date"></span> |
                 <span id="hijri-date" class="block md:inline"></span>
             </p>
-            <p id="user-current-area" class="text-green-600 mt-1"></p>
+            <p id="user-current-area" class="text-green-600 mt-1 leading-none"></p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <div class="flex items-center justify-between">
-                    <div>
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-center">
+                <div class="flex flex-row items-start justify-between">
+                    <div class="flex flex-col">
                         <h3 class="text-xl font-semibold text-gray-700">Next Prayer: <span id="next-prayer-name" class="text-green-700"></span></h3>
                         <p class="text-3xl font-bold text-green-800 mt-2"><span id="next-prayer-time">--:-- --</span></p>
                         <p class="text-gray-500 mt-1">Time left: <span id="duration-left">--:--</span></p>
-                        
-                        <div class="grid grid-cols-2 gap-4 mt-4 text-center">
-                            <div>
-                                <p class="text-gray-600 font-semibold text-sm">Sehri Ends:</p>
-                                <p id="sehri-time-display" class="text-xl font-bold text-blue-700">--:--</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-600 font-semibold text-sm">Iftari Begins:</p>
-                                <p id="iftari-time-display" class="text-xl font-bold text-orange-700">--:--</p>
-                            </div>
+                    </div>
+                    <div class="flex flex-col space-y-2 text-right">
+                        <div>
+                            <p class="text-gray-600 font-semibold text-sm">Sehri Ends:</p>
+                            <p id="sehri-time-display" class="text-xl font-bold text-blue-700">--:--</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600 font-semibold text-sm">Iftari Begins:</p>
+                            <p id="iftari-time-display" class="text-xl font-bold text-orange-700">--:--</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-center">
                 <div class="flex items-center justify-between">
                     <div class="flex-grow">
                         <h3 class="text-xl font-semibold text-gray-700">Your Location</h3>
@@ -148,9 +195,11 @@
             <div class="flex flex-col md:flex-row items-center justify-between mb-4">
                 <div class="w-full md:w-1/2 mb-4 md:mb-0">
                     <label for="masjid-select" class="block text-sm font-medium text-gray-700">Masjid</label>
-                    <div class="flex items-center"> <select id="masjid-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md shadow-sm border"> <option value="">Select a Masjid</option>
-                            </select>
-                        </div>
+                    <div class="flex items-center">
+                        <select id="masjid-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md shadow-sm border">
+                            <option value="">Select a Masjid</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="flex items-center space-x-2">
                     <button id="view-details-btn" class="bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded-full shadow-md transition-colors hidden">
@@ -163,7 +212,7 @@
             </div>
 
             <div id="prayer-times" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                </div>
+            </div>
         </div>
     </main>
 
