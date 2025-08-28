@@ -6,44 +6,32 @@
     <title>My Quran App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .font-arabic {
-            font-family: 'A-Jannat', 'Amiri', 'Traditional Arabic', serif;
-        }
-        @font-face {
-            font-family: 'A-Jannat';
-            src: url('./fonts/A-Jannat.ttf') format('truetype');
-        }
-        .tab-btn-active {
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="/css/quranstyle.css">
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans leading-normal tracking-normal">
     
-    <header class="bg-indigo-700 text-white p-4 shadow-md flex justify-between items-center">
+    <header class="bg-indigo-700 text-white p-4 shadow-md flex justify-between items-center" role="banner">
         <h1 class="text-2xl font-bold">My Quran App</h1>
         <div class="flex items-center space-x-4">
             <span id="quran-user-name" class="text-lg">Guest</span>
-            <button id="quran-logout-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded hidden">Logout</button>
-            <button id="quran-login-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Login</button>
+            <button id="quran-logout-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded hidden" aria-label="Logout user">Logout</button>
+            <button id="quran-login-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" aria-label="Login to your account">Login</button>
         </div>
     </header>
 
-    <main class="container mx-auto p-4 mt-4 bg-white rounded shadow-lg">
+    <main class="container mx-auto p-4 mt-4 bg-white rounded shadow-lg" role="main">
         
-        <div id="status-message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative hidden mb-4"></div>
+        <div id="status-message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative hidden mb-4" role="status"></div>
 
-        <div id="quran-tabs" class="mb-6 flex space-x-4">
-            <button data-tab="listen-tab" class="tab-btn px-6 py-3 rounded-t-lg font-semibold text-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 ease-in-out tab-btn-active">Listen</button>
-            <button data-tab="read-tab" class="tab-btn px-6 py-3 rounded-t-lg font-semibold text-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300 ease-in-out">Read</button>
-            <button data-tab="user-dashboard-tab" class="tab-btn px-6 py-3 rounded-t-lg font-semibold text-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300 ease-in-out">Dashboard</button>
+        <div id="quran-tabs" class="mb-6 flex space-x-4" role="tablist" aria-label="Quran app sections">
+            <button data-tab="listen-tab" class="tab-btn px-6 py-3 rounded-t-lg font-semibold text-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 ease-in-out tab-btn-active" role="tab" aria-selected="true" aria-controls="listen-tab">Listen</button>
+            <button data-tab="read-tab" class="tab-btn px-6 py-3 rounded-t-lg font-semibold text-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300 ease-in-out" role="tab" aria-selected="false" aria-controls="read-tab">Read</button>
+            <button data-tab="user-dashboard-tab" class="tab-btn px-6 py-3 rounded-t-lg font-semibold text-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition duration-300 ease-in-out" role="tab" aria-selected="false" aria-controls="user-dashboard-tab">Dashboard</button>
         </div>
 
         <div id="quran-content">
             
-            <section id="listen-tab" class="tab-content p-6 border border-gray-200 rounded-b-lg rounded-tr-lg">
+            <section id="listen-tab" class="tab-content p-6 border border-gray-200 rounded-b-lg rounded-tr-lg" role="tabpanel" tabindex="0">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div>
                         <label for="surah-select-listen" class="block text-sm font-medium text-gray-700 mb-1">Select Surah:</label>
@@ -62,29 +50,25 @@
                             <option value="1.5">1.5x</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="script-select-read" class="block text-sm font-medium text-gray-700 mb-1">Select Script:</label>
-                        <select id="script-select-read" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"></select>
-                    </div>
                 </div>
 
                 <div class="flex justify-center space-x-4 mb-6">
-                    <button id="play-pause-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg">
-                        <i class="fas fa-play"></i> Play
+                    <button id="play-pause-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg" aria-label="Play or pause audio">
+                        <i class="fas fa-play" aria-hidden="true"></i> Play
                     </button>
-                    <button id="stop-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg">
-                        <i class="fas fa-stop"></i> Stop
+                    <button id="stop-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg" aria-label="Stop audio playback">
+                        <i class="fas fa-stop" aria-hidden="true"></i> Stop
                     </button>
                 </div>
 
-                <audio id="quran-audio" preload="auto" class="w-full mb-6 hidden"></audio>
+                <audio id="quran-audio" preload="auto" class="w-full mb-6 hidden" aria-live="polite" aria-label="Quran audio player"></audio>
 
-                <div id="quran-display-listen" class="bg-gray-50 p-6 rounded-lg shadow-inner max-h-96 overflow-y-auto text-center text-xl leading-relaxed">
-                    <p class="text-gray-500">Select a Surah and press Play to start listening.</p>
+                <div id="quran-display-listen" class="bg-gray-50 p-6 rounded-lg shadow-inner max-h-96 overflow-y-auto" aria-live="polite">
+                    <p class="text-gray-500 text-center">Select a Surah and press Play to start listening.</p>
                 </div>
             </section>
 
-            <section id="read-tab" class="tab-content p-6 border border-gray-200 rounded-b-lg rounded-tr-lg hidden">
+            <section id="read-tab" class="tab-content p-6 border border-gray-200 rounded-b-lg rounded-tr-lg hidden" role="tabpanel" tabindex="0">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
                         <label for="surah-select-read" class="block text-sm font-medium text-gray-700 mb-1">Select Surah:</label>
@@ -94,63 +78,60 @@
                         <label for="ayah-select" class="block text-sm font-medium text-gray-700 mb-1">Select Ayah:</label>
                         <select id="ayah-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"></select>
                     </div>
-                    <div>
-                        <label for="script-select-read" class="block text-sm font-medium text-gray-700 mb-1">Select Script:</label>
-                        <select id="script-select-read" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"></select>
-                    </div>
+                </div>
+                
+                <div id="quran-display-read" class="bg-gray-50 p-6 rounded-lg shadow-inner max-h-96 overflow-y-auto mb-6" aria-live="polite">
+                    <p class="text-gray-500 text-center">Select a Surah and Ayah to start reading.</p>
                 </div>
 
-                <div class="flex justify-center space-x-4 mb-6">
-                    <button id="prev-ayah-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg">
-                        <i class="fas fa-arrow-left"></i> Previous Ayah
+                <div class="flex justify-center space-x-4">
+                    <button id="prev-ayah-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg" aria-label="Read previous Ayah">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Previous Ayah
                     </button>
-                    <button id="start-done-reading-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg">
+                    <button id="start-done-reading-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg" aria-label="Start or finish reading session">
                         Start Reading
                     </button>
-                    <button id="next-ayah-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg">
-                        Next Ayah <i class="fas fa-arrow-right"></i>
+                    <button id="next-ayah-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg" aria-label="Read next Ayah">
+                        Next Ayah <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </div>
 
-                <div id="quran-display-read" class="bg-gray-50 p-6 rounded-lg shadow-inner max-h-96 overflow-y-auto text-center text-2xl leading-relaxed">
-                    <p class="text-gray-500">Select a Surah and Ayah to start reading.</p>
-                </div>
             </section>
 
-            <section id="user-dashboard-tab" class="tab-content hidden mb-8 p-6 bg-gray-50 rounded-lg shadow-inner">
+            <section id="user-dashboard-tab" class="tab-content hidden mb-8 p-6 bg-gray-50 rounded-lg shadow-inner" role="tabpanel" tabindex="0">
                 <h2 class="text-xl font-semibold mb-4 text-indigo-700">Your Progress</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Read Today</h3>
-                        <p id="daily-ayahs-read" class="text-3xl font-bold text-indigo-600">0</p>
+                        <p id="daily-ayahs-read" class="text-3xl font-bold text-indigo-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Listened Today</h3>
-                        <p id="daily-ayahs-listened" class="text-3xl font-bold text-green-600">0</p>
+                        <p id="daily-ayahs-listened" class="text-3xl font-bold text-green-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Read This Week</h3>
-                        <p id="weekly-ayahs-read" class="text-3xl font-bold text-indigo-600">0</p>
+                        <p id="weekly-ayahs-read" class="text-3xl font-bold text-indigo-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Listened This Week</h3>
-                        <p id="weekly-ayahs-listened" class="text-3xl font-bold text-green-600">0</p>
+                        <p id="weekly-ayahs-listened" class="text-3xl font-bold text-green-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Read This Month</h3>
-                        <p id="monthly-ayahs-read" class="text-3xl font-bold text-indigo-600">0</p>
+                        <p id="monthly-ayahs-read" class="text-3xl font-bold text-indigo-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Listened This Month</h3>
-                        <p id="monthly-ayahs-listened" class="text-3xl font-bold text-green-600">0</p>
+                        <p id="monthly-ayahs-listened" class="text-3xl font-bold text-green-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Read Overall</h3>
-                        <p id="total-ayahs-read" class="text-3xl font-bold text-indigo-600">0</p>
+                        <p id="total-ayahs-read" class="text-3xl font-bold text-indigo-600" aria-live="polite">0</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                         <h3 class="text-md font-medium text-gray-600">Ayahs Listened Overall</h3>
-                        <p id="total-ayahs-listened" class="text-3xl font-bold text-green-600">0</p>
+                        <p id="total-ayahs-listened" class="text-3xl font-bold text-green-600" aria-live="polite">0</p>
                     </div>
                 </div>
                 <div class="mt-6 border-t pt-4">
@@ -158,15 +139,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2 text-center">
                         <div class="bg-white p-4 rounded-lg shadow-sm">
                             <h4 class="text-sm font-medium text-gray-500">Earned</h4>
-                            <p id="rewards-earned" class="text-2xl font-bold text-purple-600">0</p>
+                            <p id="rewards-earned" class="text-2xl font-bold text-purple-600" aria-live="polite">0</p>
                         </div>
                         <div class="bg-white p-4 rounded-lg shadow-sm">
                             <h4 class="text-sm font-medium text-gray-500">Redeemed</h4>
-                            <p id="rewards-redeemed" class="text-2xl font-bold text-red-600">0</p>
+                            <p id="rewards-redeemed" class="text-2xl font-bold text-red-600" aria-live="polite">0</p>
                         </div>
                         <div class="bg-white p-4 rounded-lg shadow-sm">
                             <h4 class="text-sm font-medium text-gray-500">Available</h4>
-                            <p id="rewards-available" class="text-2xl font-bold text-yellow-600">0</p>
+                            <p id="rewards-available" class="text-2xl font-bold text-yellow-600" aria-live="polite">0</p>
                         </div>
                     </div>
                 </div>
@@ -174,7 +155,7 @@
         </div>
     </main>
 
-    <footer class="bg-indigo-700 text-white p-4 text-center mt-8">
+    <footer class="bg-indigo-700 text-white p-4 text-center mt-8" role="contentinfo">
         <p>&copy; 2025 My Quran App. All rights reserved.</p>
     </footer>
 
