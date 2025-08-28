@@ -95,8 +95,8 @@
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center">
                 <i class="fas fa-mosque text-xl mr-2"></i>
-                <h1 class="text-lg font-bold">My Masjid</h1>
-            </div>
+                <h1 class="text-lg font-bold">My Masjid : <span id="header-masjid-name" class="ml-2"></span></h1>
+                </div>
             <nav class="flex items-center space-x-2">
                 <div class="relative md:hidden">
                     <button id="main-menu-btn" class="text-white focus:outline-none p-1">
@@ -202,7 +202,10 @@
                     <button id="directions-btn" class="bg-blue-500 hover:bg-blue-400 text-white py-1 px-3 rounded-full shadow-md transition-colors text-sm hidden">
                         <i class="fas fa-map-marker-alt mr-1"></i>Directions
                     </button>
-                </div>
+                    <button id="set-default-masjid-btn" class="bg-gray-500 hover:bg-gray-400 text-white py-1 px-3 rounded-full shadow-md transition-colors text-sm hidden">
+                        <i class="fas fa-home mr-1"></i>Set as My Masjid
+                    </button>
+                    </div>
             </div>
 
             <div id="prayer-times" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
