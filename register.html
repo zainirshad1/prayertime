@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ummati Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(0.5);
+        }
+        /* Style for the button with a subtle hover effect */
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-lg">
+        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Ummati Registration</h1>
+        
+        <div id="error-msg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 hidden" role="alert"></div>
+        <div id="success-msg" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 hidden" role="alert"></div>
+
+        <form id="registration-form" class="space-y-6">
+            <div>
+                <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <input id="first-name" type="text" placeholder="Enter First Name (and Middle Name if any)" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+            </div>
+            <div>
+                <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <input id="last-name" type="text" placeholder="Enter Last Name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth (Optional)</label>
+                    <input id="dob" type="date" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Age (min 16Yrs)</label>
+                    <input id="age" type="number" placeholder="Enter age" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                </div>
+            </div>
+            <div>
+                <label for="contact-number" class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+                <input id="contact-number" type="tel" placeholder="+91-0123456789" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+            </div>
+
+            <!-- Location fields for all users -->
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">Location Details</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address <span id="address-required-star" class="text-red-500 hidden">*</span></label>
+                        <input id="address" type="text" placeholder="e.g., 123 Main St" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+                    </div>
+                    <div>
+                        <label for="zipcode" class="block text-sm font-medium text-gray-700 mb-1">Zipcode <span id="zipcode-required-star" class="text-red-500">*</span></label>
+                        <input id="zipcode" type="text" placeholder="Enter 6 Digit ZipCode" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+                    </div>
+                    <div>
+                        <label for="locality-area" class="block text-sm font-medium text-gray-700 mb-1">Locality/Area Name <span id="locality-area-required-star" class="text-red-500 hidden">*</span></label>
+                        <select id="locality-area" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled>
+                            <option value="">Please enter a Zipcode first</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City <span id="city-required-star" class="text-red-500 hidden">*</span></label>
+                        <input id="city" type="text" placeholder="Auto-filled by Zipcode" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" readonly />
+                    </div>
+                    <div>
+                        <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State <span id="state-required-star" class="text-red-500 hidden">*</span></label>
+                        <input id="state" type="text" placeholder="Auto-filled by Zipcode" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" readonly />
+                    </div>
+                    <div>
+                        <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country <span id="country-required-star" class="text-red-500 hidden">*</span></label>
+                        <input id="country" type="text" placeholder="Auto-filled by Zipcode" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" readonly />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-green-50 p-4 rounded-lg">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Asr Calculation Method:</label>
+                <div class="flex items-center space-x-6">
+                    <label class="inline-flex items-center">
+                        <input type="radio" id="asr-hanafi" name="asrCalculation" value="1" class="form-radio text-green-600 focus:ring-green-500" checked>
+                        <span class="ml-2 text-gray-700">Hanafi</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" id="asr-shafi" name="asrCalculation" value="0" class="form-radio text-green-600 focus:ring-green-500">
+                        <span class="ml-2 text-gray-700">Shafi</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Register as a Teacher?</label>
+                <div class="flex items-center space-x-6">
+                    <label class="inline-flex items-center">
+                        <input type="radio" id="teacher-yes" name="isTeacher" value="yes" class="form-radio text-blue-600 focus:ring-blue-500">
+                        <span class="ml-2 text-gray-700">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" id="teacher-no" name="isTeacher" value="no" class="form-radio text-blue-600 focus:ring-blue-500" checked>
+                        <span class="ml-2 text-gray-700">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="teacher-fields" class="space-y-4 hidden bg-yellow-50 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold text-gray-800">Teacher Application</h2>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Are you a Hafiz?</label>
+                    <div class="flex items-center space-x-6">
+                        <label class="inline-flex items-center">
+                            <input type="radio" id="hafiz-yes" name="isHafiz" value="yes" class="form-radio text-yellow-600 focus:ring-yellow-500">
+                            <span class="ml-2 text-gray-700">Yes</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" id="hafiz-no" name="isHafiz" value="no" class="form-radio text-yellow-600 focus:ring-yellow-500" checked>
+                            <span class="ml-2 text-gray-700">No</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="hafiz-fields" class="space-y-4 hidden">
+                    <div>
+                        <label for="hafiz-doc" class="block text-sm font-medium text-gray-700 mb-1">Hafiz Certificate Document</label>
+                        <input type="file" id="hafiz-doc" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                        <p class="text-xs text-gray-500 mt-1">Max file size: 1MB. Accepted formats: PDF, DOC/DOCX, and images.</p>
+                    </div>
+                    <div>
+                        <label for="hafiz-experience" class="block text-sm font-medium text-gray-700 mb-1">Years of experience (Hafiz)</label>
+                        <input type="number" id="hafiz-experience" placeholder="Years of Experience" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">Account Information</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input id="email" type="email" placeholder="you@example.com" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input id="password" type="password" placeholder="Min 8 characters, 1 special character" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    </div>
+                    <div>
+                        <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input id="confirm-password" type="password" placeholder="Confirm your password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    </div>
+                </div>
+            </div>
+
+            <button id="register-btn" type="submit" class="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 hover-lift">Register</button>
+            <div class="mt-4 text-center text-sm">
+                Already have an account? <a href="login.html" class="text-green-700 hover:underline font-medium">Back to Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+        import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+
+        // Import your Firebase configuration from the new file
+        import { firebaseConfig } from './js/firebase-config.js'; 
+        // Import the new geocoding function
+        import { getPlaceDetailsByZipCode } from './js/google-geocoding.js'; 
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        const form = document.getElementById('registration-form');
+        const errorMsg = document.getElementById('error-msg');
+        const successMsg = document.getElementById('success-msg');
+        const dobInput = document.getElementById('dob');
+        const ageInput = document.getElementById('age');
+
+        const addressInput = document.getElementById('address');
+        const zipcodeInput = document.getElementById('zipcode');
+        const localityAreaSelect = document.getElementById('locality-area'); // Changed from input to select
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        const countryInput = document.getElementById('country');
+
+        const isTeacherRadios = document.getElementsByName('isTeacher');
+        const teacherFields = document.getElementById('teacher-fields');
+        
+        const isHafizRadios = document.getElementsByName('isHafiz');
+        const hafizFields = document.getElementById('hafiz-fields');
+        const hafizDocInput = document.getElementById('hafiz-doc');
+        const hafizExperienceInput = document.getElementById('hafiz-experience');
+
+        // References for the required stars
+        const addressRequiredStar = document.getElementById('address-required-star');
+        const zipcodeRequiredStar = document.getElementById('zipcode-required-star');
+        const localityAreaRequiredStar = document.getElementById('locality-area-required-star');
+        const cityRequiredStar = document.getElementById('city-required-star');
+        const stateRequiredStar = document.getElementById('state-required-star');
+        const countryRequiredStar = document.getElementById('country-required-star');
+
+
+        dobInput.addEventListener('change', () => {
+            const dob = dobInput.value;
+            if (dob) {
+                const age = calculateAge(dob);
+                ageInput.value = age;
+                ageInput.readOnly = true; // Make age field read-only if DOB is entered
+            } else {
+                ageInput.value = '';
+                ageInput.readOnly = false; // Allow manual entry if DOB is empty
+            }
+        });
+
+        function calculateAge(dob) {
+            const birthDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        isTeacherRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'yes') {
+                    teacherFields.classList.remove('hidden');
+                    isHafizRadios.forEach(r => r.checked = (r.value === 'no'));
+                    hafizFields.classList.add('hidden');
+                    // Make location fields required for teachers
+                    addressRequiredStar.classList.remove('hidden');
+                    zipcodeRequiredStar.classList.remove('hidden');
+                    localityAreaRequiredStar.classList.remove('hidden');
+                    cityRequiredStar.classList.remove('hidden');
+                    stateRequiredStar.classList.remove('hidden');
+                    countryRequiredStar.classList.remove('hidden');
+                    addressInput.setAttribute('required', '');
+                    zipcodeInput.setAttribute('required', '');
+                    localityAreaSelect.setAttribute('required', ''); // Make locality/area required for select
+                    cityInput.setAttribute('required', '');
+                    stateInput.setAttribute('required', '');
+                    countryInput.setAttribute('required', '');
+                } else {
+                    teacherFields.classList.add('hidden');
+                    // Make location fields optional for non-teachers
+                    addressRequiredStar.classList.add('hidden');
+                    zipcodeRequiredStar.classList.add('hidden');
+                    localityAreaRequiredStar.classList.add('hidden');
+                    cityRequiredStar.classList.add('hidden');
+                    stateRequiredStar.classList.add('hidden');
+                    countryRequiredStar.classList.add('hidden');
+                    addressInput.removeAttribute('required');
+                    zipcodeInput.removeAttribute('required');
+                    localityAreaSelect.removeAttribute('required'); // Make locality/area optional for select
+                    cityInput.removeAttribute('required');
+                    stateInput.removeAttribute('required');
+                    countryInput.removeAttribute('required');
+                }
+            });
+        });
+        // Set initial state based on default 'No' for teacher radio button
+        if (document.getElementById('teacher-no').checked) {
+            addressRequiredStar.classList.add('hidden');
+            zipcodeRequiredStar.classList.add('hidden');
+            localityAreaRequiredStar.classList.add('hidden');
+            cityRequiredStar.classList.add('hidden');
+            stateRequiredStar.classList.add('hidden');
+            countryRequiredStar.classList.add('hidden');
+            addressInput.removeAttribute('required');
+            zipcodeInput.removeAttribute('required');
+            localityAreaSelect.removeAttribute('required');
+            cityInput.removeAttribute('required');
+            stateInput.removeAttribute('required');
+            countryInput.removeAttribute('required');
+        }
+
+
+        isHafizRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'yes') {
+                    hafizFields.classList.remove('hidden');
+                } else {
+                    hafizFields.classList.add('hidden');
+                }
+            });
+        });
+
+        // Event listener for zipcode input to trigger geocoding API call
+        zipcodeInput.addEventListener('blur', () => {
+            // Pass the localityAreaSelect element to the geocoding function
+            getPlaceDetailsByZipCode(zipcodeInput.value.trim(), localityAreaSelect, cityInput, stateInput, countryInput, errorMsg);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+            errorMsg.classList.add('hidden');
+            successMsg.classList.add('hidden');
+
+            const isTeacher = document.querySelector('input[name="isTeacher"]:checked').value === 'yes';
+            const asrCalculation = document.querySelector('input[name="asrCalculation"]:checked').value;
+            
+            const firstName = document.getElementById('first-name').value.trim();
+            const lastName = document.getElementById('last-name').value.trim();
+            const dob = dobInput.value;
+            const age = parseInt(ageInput.value, 10);
+            const contactNumber = document.getElementById('contact-number').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const address = document.getElementById('address').value.trim();
+            const zipcode = document.getElementById('zipcode').value.trim();
+            const localityArea = localityAreaSelect.value.trim(); // Get selected value from dropdown
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const country = document.getElementById('country').value.trim();
+
+            // Basic form validation (non-location fields)
+            if (!firstName || !lastName || isNaN(age) || !contactNumber || !email || !password || !confirmPassword) {
+                errorMsg.textContent = 'Please fill all required personal and account fields.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            if (password !== confirmPassword) {
+                errorMsg.textContent = 'Passwords do not match.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            if (!validatePassword(password)) {
+                errorMsg.textContent = 'Password must be at least 8 characters long and contain at least one special character.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            if (age < 16) {
+                errorMsg.textContent = 'You must be at least 16 years old to register.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // Conditional validation for location fields based on 'isTeacher'
+            if (isTeacher && (!address || !zipcode || !localityArea || !city || !state || !country)) {
+                errorMsg.textContent = 'As a teacher, Address, Zipcode, Locality/Area Name, City, State, and Country are mandatory.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            let role = 'appUser';
+            let hafizDocURL = null;
+            let hafizExperience = null;
+
+            if (isTeacher) {
+                const isHafiz = document.querySelector('input[name="isHafiz"]:checked').value === 'yes';
+
+                if (!isHafiz) {
+                    errorMsg.textContent = 'Only certified Hafiz can register as a teacher.';
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
+
+                const hafizDocFile = hafizDocInput.files[0];
+                if (!hafizDocFile) {
+                    errorMsg.textContent = 'Please upload your Hafiz certificate.';
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
+
+                hafizExperience = document.getElementById('hafiz-experience').value;
+                role = 'Hafiz';
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const userId = userCredential.user.uid;
+
+                if (isTeacher) {
+                    const hafizDocFile = hafizDocInput.files[0];
+                    const hafizStorageRef = ref(storage, `teacher_documents/${userId}/hafiz_certificate_${hafizDocFile.name}`);
+                    await uploadBytes(hafizStorageRef, hafizDocFile);
+                    hafizDocURL = await getDownloadURL(hafizStorageRef);
+                }
+
+                const userData = {
+                    firstName,
+                    lastName,
+                    dob,
+                    age,
+                    contactNumber,
+                    email,
+                    role,
+                    // Include location data only if provided or if teacher (mandatory)
+                    address: address || null,
+                    zipcode: zipcode || null,
+                    localityArea: localityArea || null,
+                    city: city || null,
+                    state: state || null,
+                    country: country || null,
+                    masjidId: null,
+                    asrCalculationSchool: asrCalculation
+                };
+
+                if (isTeacher) {
+                    userData.hafizDocURL = hafizDocURL;
+                    userData.hafizExperience = hafizExperience;
+                }
+                
+                await setDoc(doc(db, 'users', userId), userData);
+
+                successMsg.textContent = 'Registration successful! Please log in.';
+                successMsg.classList.remove('hidden');
+                clearAllFields();
+
+            } catch (error) {
+                console.error("Error during registration:", error);
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMsg.textContent = 'This email is already registered. Please use a different email or proceed to login.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg.textContent = 'Please enter a valid email address.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg.textContent = 'Password is too weak. Please choose a stronger password (min 8 chars, at least 1 special character).';
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    errorMsg.textContent = 'Email/password authentication is not enabled. Please enable it in Firebase Console -> Authentication.';
+                } else {
+                    errorMsg.textContent = `Error during registration: ${error.message}`;
+                }
+                errorMsg.classList.remove('hidden');
+            }
+        });
+
+        function validatePassword(password) {
+            const regex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+            return regex.test(password);
+        }
+
+        function clearAllFields() {
+            document.getElementById('first-name').value = '';
+            document.getElementById('last-name').value = '';
+            dobInput.value = '';
+            ageInput.value = '';
+            ageInput.readOnly = false;
+            document.getElementById('contact-number').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirm-password').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('zipcode').value = '';
+            localityAreaSelect.innerHTML = '<option value="">Please enter a Zipcode first</option>'; // Reset dropdown
+            localityAreaSelect.value = '';
+            localityAreaSelect.disabled = true; // Disable dropdown
+            document.getElementById('city').value = '';
+            document.getElementById('state').value = '';
+            document.getElementById('country').value = '';
+            stateInput.readOnly = false;
+            cityInput.readOnly = false;
+            countryInput.readOnly = false;
+            localityAreaSelect.classList.remove('bg-gray-100'); // Remove grey for select
+            cityInput.classList.remove('bg-gray-100');
+            stateInput.classList.remove('bg-gray-100');
+            countryInput.classList.remove('bg-gray-100');
+
+
+            document.getElementById('asr-hanafi').checked = true;
+
+            isTeacherRadios.forEach(r => r.checked = (r.value === 'no'));
+            teacherFields.classList.add('hidden');
+
+            isHafizRadios.forEach(r => r.checked = (r.value === 'no'));
+            hafizFields.classList.add('hidden');
+            if (hafizDocInput) hafizDocInput.value = '';
+            if (hafizExperienceInput) hafizExperienceInput.value = '';
+            
+            // Ensure required stars are reset to hidden
+            addressRequiredStar.classList.add('hidden');
+            zipcodeRequiredStar.classList.add('hidden');
+            localityAreaRequiredStar.classList.add('hidden');
+            cityRequiredStar.classList.add('hidden');
+            stateRequiredStar.classList.add('hidden');
+            countryRequiredStar.classList.add('hidden');
+            addressInput.removeAttribute('required');
+            zipcodeInput.removeAttribute('required');
+            localityAreaSelect.removeAttribute('required');
+            cityInput.removeAttribute('required');
+            stateInput.removeAttribute('required');
+            countryInput.removeAttribute('required');
+        }
+    </script>
+</body>
+</html>
