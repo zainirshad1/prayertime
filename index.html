@@ -8,107 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-    <style>
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 1.5rem; /* Reduced padding */
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-            max-width: 95%; /* Increased max-width for mobile */
-            max-height: 95%;
-            overflow-y: auto;
-            position: relative;
-        }
-        .close-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.75rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #4a5568;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        input[type="radio"].form-radio {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
-            border: 2px solid #D1D5DB;
-            background-color: #ffffff;
-            vertical-align: middle;
-            position: relative;
-            cursor: pointer;
-        }
-        input[type="radio"].form-radio:checked {
-            border-color: #10B981;
-            background-color: #10B981;
-        }
-        input[type="radio"].form-radio:checked::before {
-            content: '';
-            display: block;
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            background-color: #ffffff;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .main-menu-nav {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 100%;
-            background-color: #10b981;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 500;
-            transform-origin: top;
-            transform: scaleY(0);
-            transition: transform 0.2s ease-out;
-        }
-        .main-menu-nav.active {
-            transform: scaleY(1);
-        }
-    </style>
+    
+    <link rel="stylesheet" href="namaztimestyle.css">
+    <link rel="manifest" href="manifest.json" />
+    
 </head>
-<body class="bg-gray-50">
-    <header class="bg-green-700 text-white p-3 shadow-md rounded-b-lg">
+<body class="bg-gray-100">
+    <header class="bg-indigo-700 text-white p-3 shadow-md rounded-b-lg">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center">
                 <i class="fas fa-mosque text-xl mr-2"></i>
                 <h1 class="text-lg font-bold">My Masjid : <span id="header-masjid-name" class="ml-2"></span></h1>
                 </div>
             <nav class="flex items-center space-x-2">
-                <div class="relative md:hidden">
-                    <button id="main-menu-btn" class="text-white focus:outline-none p-1">
-                        <i class="fas fa-bars text-lg"></i>
-                    </button>
-                    <div id="main-menu-dropdown" class="main-menu-nav hidden">
-                        <a href="quran.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">Quran</a>
-                        <a href="faq.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">F&Q</a>
-                        <a href="category.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">Category</a>
-                        <a href="about.html" class="block py-2 px-4 hover:bg-green-600 transition-colors duration-300">About</a>
-                    </div>
-                </div>
 
                 <div id="user-auth-section" class="relative inline-block text-left dropdown">
                     <button id="login-btn" class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-3 rounded text-sm transition-colors duration-300">
@@ -130,9 +42,10 @@
                                 <a href="admin.html" class="text-red-600 block px-4 py-2 text-sm hidden" role="menuitem" tabindex="-1" id="admin-dashboard-link"><i class="fas fa-user-shield mr-2"></i>Admin Dashboard</a>
 
                                 <a href="faq.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">F&Q</a>
-                                <a href="category.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Category</a>
+                                <a href="services.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Services</a>
                                 <a href="quran.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">Quran</a>
                                 <a href="about.html" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1">About</a>
+				<a href="hijri-converter.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Georgian to Hijri Converter</a>
 
                                 <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="logout-btn">Logout</a>
                             </div>
@@ -144,33 +57,36 @@
     </header>
 
     <main class="container mx-auto p-3 md:p-4">
-        <div class="bg-green-100 p-4 rounded-lg shadow-sm mb-4 text-center">
-            <h2 id="current-english-time-header" class="text-2xl md:text-3xl font-bold text-green-800 leading-none inline">--:-- --</h2>
-            <p class="text-sm text-green-600 mt-1">
-                <span id="current-english-day" class="font-medium"></span>
-                <span id="current-english-date"></span>
-            </p>
-            <p id="hijri-date" class="text-sm text-green-600 leading-none mt-1"></p>
+<div class="bg-indigo-200 p-4 rounded-lg shadow-sm mb-4">
+    <div class="flex items-center justify-between">
+        <p class="text-base text-green-600 font-medium leading-none">
+            <span id="current-english-date"></span>
+        </p>
+        <div class="flex flex-col items-center">
+            <h2 id="current-english-time-header" class="text-base md:text-base font-bold text-green-800 leading-none">--:-- --</h2>
         </div>
+        <p id="hijri-date" class="text-base text-green-600 font-medium"></p>
+    </div>
+    <hr class="my-2 border-green-200">
+    <div class="text-base text-left flex flex-col mt-2 space-y-2">
+        <div class="flex justify-between items-center">
+            <p class="font-semibold text-gray-700 flex-1">Now: <span id="current-prayer-name" class="text-red-700"></span> till: <span id="time-details" class="font-bold text-red-800"></span></p>
+            <p class="font-semibold text-gray-700">Sehri: <span id="sehri-time-display" class="font-bold text-red-700">--:--</span></p>
+        </div>
+        <div class="flex justify-between items-center">
+            <p class="font-semibold text-gray-700 flex-1">Next: <span id="next-prayer-name" class="text-green-700"></span> at: <span id="next-prayer-time" class="font-bold text-green-800">--:-- --</span></p>
+            <p class="font-semibold text-gray-700">Iftari: <span id="iftari-time-display" class="font-bold text-blue-700">--:--</span></p>
+        </div>
+    </div>
+</div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="bg-white p-4 rounded-lg shadow-sm flex flex-col justify-center">
-                <div class="flex flex-row items-center justify-between">
-                    <div class="flex flex-col">
-                        <h3 class="text-md font-semibold text-gray-700">Next Prayer: <span id="next-prayer-name" class="text-green-700"></span></h3>
-                        <p class="text-2xl font-bold text-green-800 mt-1"><span id="next-prayer-time">--:-- --</span></p>
-                        <p class="text-gray-500 text-sm mt-1">Time left: <span id="duration-left">--:--</span></p>
-                    </div>
-                    <div class="flex flex-col space-y-1 text-right">
-                        <div>
-                            <p class="text-gray-600 font-semibold text-xs">Sehri Ends:</p>
-                            <p id="sehri-time-display" class="text-lg font-bold text-blue-700">--:--</p>
-                        </div>
-                        <div>
-                            <p class="text-gray-600 font-semibold text-xs">Iftari Begins:</p>
-                            <p id="iftari-time-display" class="text-lg font-bold text-orange-700">--:--</p>
-                        </div>
-                    </div>
+                <div class="flex-grow">
+                    
+                        <h3 class="text-md font-semibold text-gray-700">Daily Hadith: Building </h3>
+                    
+                    
                 </div>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-sm flex flex-col justify-center">
@@ -287,5 +203,45 @@
     <div id="custom-message" class="hidden fixed bottom-3 right-3 bg-gray-800 text-white p-2 rounded-lg shadow-lg z-50 text-sm"></div>
 
     <script type="module" src="js/Namaztimes/main.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
+
+<script>
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = document.createElement('button');
+    installBtn.innerText = "Install Ummati App";
+    installBtn.className = "fixed bottom-4 right-4 bg-green-700 text-white px-4 py-2 rounded shadow-lg z-50";
+    document.body.appendChild(installBtn);
+
+    installBtn.addEventListener('click', () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choice) => {
+        console.log('Install outcome:', choice.outcome);
+        installBtn.remove();
+        deferredPrompt = null;
+      });
+    });
+  });
+</script>
+
+    <footer class="bg-indigo-700 text-white p-4 text-center mt-8">
+        <p>&copy; 2025 Ummati. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
